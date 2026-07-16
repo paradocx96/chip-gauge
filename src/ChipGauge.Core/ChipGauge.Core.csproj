@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>ChipGauge.Core</RootNamespace>
+    <AssemblyName>ChipGauge.Core</AssemblyName>
+    <Description>Platform-independent hardware monitoring engine: domain model, sampling engine, history buffers, alerting, SMART health and report export.</Description>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ChipGauge.Core.Tests" />
+  </ItemGroup>
+
+</Project>

@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>ChipGauge.Hardware.Mock</RootNamespace>
+    <AssemblyName>ChipGauge.Hardware.Mock</AssemblyName>
+    <Description>Deterministic simulated sensor provider. Powers UI development, screenshots, demos and CI runs without real (elevated) hardware access.</Description>
+    <IsAotCompatible>true</IsAotCompatible>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChipGauge.Core\ChipGauge.Core.csproj" />
+  </ItemGroup>
+
+</Project>
