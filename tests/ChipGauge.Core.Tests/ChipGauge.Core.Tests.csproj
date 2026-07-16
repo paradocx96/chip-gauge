@@ -1,0 +1,29 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>ChipGauge.Core.Tests</RootNamespace>
+    <AssemblyName>ChipGauge.Core.Tests</AssemblyName>
+    <IsPackable>false</IsPackable>
+    <IsTestProject>true</IsTestProject>
+    <!-- Tests document intent through names; XML docs and some analyzers are noise here. -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <NoWarn>$(NoWarn);CA1707;CA5394</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" />
+    <PackageReference Include="xunit.v3" />
+    <PackageReference Include="xunit.runner.visualstudio" />
+    <PackageReference Include="coverlet.collector" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Using Include="Xunit" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\ChipGauge.Core\ChipGauge.Core.csproj" />
+    <ProjectReference Include="..\..\src\ChipGauge.Hardware.Mock\ChipGauge.Hardware.Mock.csproj" />
+  </ItemGroup>
+
+</Project>

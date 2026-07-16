@@ -1,0 +1,61 @@
+# .NET build output
+bin/
+obj/
+out/
+publish/
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+[Aa][Rr][Mm]64/
+
+# Test / coverage
+[Tt]est[Rr]esult*/
+*.trx
+*.coverage
+*.coveragexml
+coverage/
+coverage*.json
+coverage*.xml
+coverage*.info
+.coverlet/
+
+# .NET tooling
+*.user
+*.suo
+.vs/
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.shared.json
+project.lock.json
+project.assets.json
+*.nuget.props
+*.nuget.targets
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# Packaging output (Velopack, MSIX, installers)
+Releases/
+*.nupkg
+!build/**/*.nupkg
+*.snupkg
+*.msix
+*.msixbundle
+*.appinstaller
+AppPackages/
+
+# Generated raster assets (regenerated from SVG masters via build/generate-icons.py)
+src/ChipGauge.App/Assets/generated/
+
+# OS cruft
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs & local env
+*.log
+.env
+.env.local
