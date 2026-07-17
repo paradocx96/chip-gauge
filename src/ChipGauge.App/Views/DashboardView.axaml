@@ -61,7 +61,7 @@
                   </ItemsControl.ItemsPanel>
                   <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:SensorViewModel">
-                      <StackPanel>
+                      <StackPanel IsVisible="{Binding HasValue}">
                         <TextBlock Classes="subtle" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
                         <TextBlock Text="{Binding Value}" FontWeight="SemiBold" />
                       </StackPanel>

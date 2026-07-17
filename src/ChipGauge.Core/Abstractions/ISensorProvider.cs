@@ -33,6 +33,14 @@ public interface ISensorProvider : IDisposable
     bool IsSimulated { get; }
 
     /// <summary>
+    /// True when the provider has the privileges it needs for full data. Always true
+    /// when <see cref="RequiresElevation"/> is false; on Windows it reflects whether
+    /// the process is elevated (the kernel driver for temperatures, power, fan speeds
+    /// and SMART requires administrator rights).
+    /// </summary>
+    bool IsElevated { get; }
+
+    /// <summary>
     /// Returns the discovered hardware tree. The returned <see cref="HardwareItem"/>
     /// instances are stable for the lifetime of the provider; <see cref="Sample"/>
     /// updates values by sensor id rather than replacing the tree.

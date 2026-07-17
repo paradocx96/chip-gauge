@@ -29,6 +29,8 @@ internal sealed class ScriptedSensorProvider : ISensorProvider
 
     public bool IsSimulated => true;
 
+    public bool IsElevated => true;
+
     public int SampleCallCount => _sampleIndex;
 
     public bool Disposed { get; private set; }

@@ -64,6 +64,7 @@
   <data name="Nav_Settings" xml:space="preserve"><value>Settings</value></data>
 
   <data name="Status_SimulatedData" xml:space="preserve"><value>Showing simulated data (demo provider)</value></data>
+  <data name="Elevation_Notice" xml:space="preserve"><value>Running without administrator rights — temperatures, power, fan speeds and drive health are unavailable. Restart ChipGauge as administrator for full sensor data.</value></data>
 
   <data name="Dashboard_System" xml:space="preserve"><value>System</value></data>
   <data name="Dashboard_Uptime" xml:space="preserve"><value>Uptime</value></data>

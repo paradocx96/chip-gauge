@@ -67,6 +67,19 @@
         </Grid>
       </Border>
 
+      <!-- Elevation notice (Windows, non-admin) -->
+      <Border DockPanel.Dock="Top" IsVisible="{Binding ShowElevationNotice}"
+              Margin="24,0,24,12" CornerRadius="10" Padding="14,10"
+              Background="#22F59E0B"
+              BorderBrush="{DynamicResource HealthCautionBrush}" BorderThickness="1">
+        <Grid ColumnDefinitions="Auto,*">
+          <TextBlock Text="⚠" FontSize="16" VerticalAlignment="Center" Margin="0,0,10,0"
+                     Foreground="{DynamicResource HealthCautionBrush}" />
+          <TextBlock Grid.Column="1" Text="{loc:Localize Elevation_Notice}"
+                     TextWrapping="Wrap" VerticalAlignment="Center" />
+        </Grid>
+      </Border>
+
       <!-- Selected page -->
       <ContentControl Content="{Binding SelectedPage}" Margin="24,0,24,24" />
     </DockPanel>

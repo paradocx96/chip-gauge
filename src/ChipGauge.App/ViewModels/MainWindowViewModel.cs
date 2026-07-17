@@ -35,6 +35,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
         Localizer = localizer;
         Theme = theme;
         IsSimulated = provider.IsSimulated;
+        ShowElevationNotice = provider.RequiresElevation && !provider.IsElevated;
 
         Pages =
         [
@@ -66,6 +67,9 @@ public sealed partial class MainWindowViewModel : ObservableObject
 
     /// <summary>True when the data is simulated (drives the "demo data" badge).</summary>
     public bool IsSimulated { get; }
+
+    /// <summary>True when the app is running without the elevation needed for full sensors.</summary>
+    public bool ShowElevationNotice { get; }
 
     /// <summary>Forwards a tick to the visible page.</summary>
     public void OnTick() => SelectedPage.OnTick();
