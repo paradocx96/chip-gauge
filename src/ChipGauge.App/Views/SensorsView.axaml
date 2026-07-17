@@ -1,0 +1,50 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChipGauge.App.ViewModels"
+             xmlns:loc="using:ChipGauge.App.Services.Markup"
+             x:Class="ChipGauge.App.Views.SensorsView"
+             x:DataType="vm:SensorsViewModel">
+
+  <DockPanel>
+    <!-- Search -->
+    <TextBox DockPanel.Dock="Top" Margin="0,0,0,12"
+             Text="{Binding Filter, Mode=TwoWay}"
+             PlaceholderText="{loc:Localize Sensors_Search}" />
+
+    <Border Classes="card" Padding="0">
+      <DockPanel>
+        <!-- Header -->
+        <Border DockPanel.Dock="Top" Padding="16,12"
+                BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,0,1">
+          <Grid ColumnDefinitions="*,*,110,90,90,90">
+            <TextBlock Classes="subtle" Text="{loc:Localize Sensors_ColDevice}" />
+            <TextBlock Grid.Column="1" Classes="subtle" Text="{loc:Localize Sensors_ColSensor}" />
+            <TextBlock Grid.Column="2" Classes="subtle" Text="{loc:Localize Sensors_ColCurrent}" />
+            <TextBlock Grid.Column="3" Classes="subtle" Text="{loc:Localize Sensors_ColMin}" />
+            <TextBlock Grid.Column="4" Classes="subtle" Text="{loc:Localize Sensors_ColMax}" />
+            <TextBlock Grid.Column="5" Classes="subtle" Text="{loc:Localize Sensors_ColAvg}" />
+          </Grid>
+        </Border>
+
+        <!-- Rows -->
+        <ScrollViewer>
+          <ItemsControl ItemsSource="{Binding Rows}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:SensorRow">
+                <Grid ColumnDefinitions="*,*,110,90,90,90" Margin="16,7">
+                  <TextBlock Classes="subtle" Text="{Binding Device}" TextTrimming="CharacterEllipsis" />
+                  <TextBlock Grid.Column="1" Text="{Binding Sensor.Name}" TextTrimming="CharacterEllipsis" />
+                  <TextBlock Grid.Column="2" Text="{Binding Sensor.Value}" FontWeight="SemiBold"
+                             Foreground="{DynamicResource BrandBrush}" />
+                  <TextBlock Grid.Column="3" Text="{Binding Sensor.Min}" />
+                  <TextBlock Grid.Column="4" Text="{Binding Sensor.Max}" />
+                  <TextBlock Grid.Column="5" Text="{Binding Sensor.Average}" />
+                </Grid>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </ScrollViewer>
+      </DockPanel>
+    </Border>
+  </DockPanel>
+</UserControl>

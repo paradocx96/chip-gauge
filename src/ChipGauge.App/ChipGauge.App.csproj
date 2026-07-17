@@ -1,0 +1,44 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <RootNamespace>ChipGauge.App</RootNamespace>
+    <!-- Assembly name matches the namespace so avares:// URIs resolve; the shipped
+         executable is renamed to "ChipGauge" at packaging time. -->
+    <AssemblyName>ChipGauge.App</AssemblyName>
+    <Description>ChipGauge desktop application (Avalonia UI).</Description>
+
+    <!-- It's an executable, not a documented library. -->
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+
+    <BuiltInComInteropSupport>true</BuiltInComInteropSupport>
+    <AvaloniaUseCompiledBindingsByDefault>true</AvaloniaUseCompiledBindingsByDefault>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>../../assets/generated/icon.ico</ApplicationIcon>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Avalonia" />
+    <PackageReference Include="Avalonia.Desktop" />
+    <PackageReference Include="Avalonia.Themes.Fluent" />
+    <PackageReference Include="Avalonia.Fonts.Inter" />
+    <PackageReference Include="CommunityToolkit.Mvvm" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChipGauge.Core\ChipGauge.Core.csproj" />
+    <ProjectReference Include="..\ChipGauge.Hardware.Mock\ChipGauge.Hardware.Mock.csproj" />
+  </ItemGroup>
+
+  <!-- Bundle branding assets from the repo without duplicating the files. -->
+  <ItemGroup>
+    <AvaloniaResource Include="..\..\assets\generated\icon-256.png" Link="Assets/app-icon.png" />
+    <AvaloniaResource Include="..\..\assets\generated\logo.png" Link="Assets/logo.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <InternalsVisibleTo Include="ChipGauge.App.Tests" />
+  </ItemGroup>
+
+</Project>

@@ -12,18 +12,33 @@ drive health.
 [![CI](https://github.com/paradocx96/system-app/actions/workflows/ci.yml/badge.svg)](https://github.com/paradocx96/system-app/actions/workflows/ci.yml)
 [![CodeQL](https://github.com/paradocx96/system-app/actions/workflows/codeql.yml/badge.svg)](https://github.com/paradocx96/system-app/actions/workflows/codeql.yml)
 ![.NET 10](https://img.shields.io/badge/.NET-10%20LTS-512BD4?logo=dotnet&logoColor=white)
+![Avalonia](https://img.shields.io/badge/UI-Avalonia%2012-7C3AED)
 ![Platform](https://img.shields.io/badge/platform-Windows%20%C2%B7%20macOS%20(planned)-0EA5E9)
-![Status](https://img.shields.io/badge/status-Phase%200%20foundation-7C3AED)
+![Status](https://img.shields.io/badge/status-Phase%201%20MVP-7C3AED)
 
 </div>
 
 ---
 
-> **Project status — Phase 0 (Foundation).**
-> The platform-independent monitoring engine, the simulated hardware provider,
-> the test suite, CI, and branding are in place and green. The Avalonia desktop
-> UI and the live Windows sensor provider land in Phase 1. See the
-> [roadmap](#roadmap) and the full [architecture & development plan](docs/PLAN.md).
+> **Project status — Phase 1 (Live MVP).**
+> The Avalonia desktop app is up: a navigable shell, a live dashboard, per-category
+> views, an HWiNFO-style sensor table, dark/light theming and full English/German
+> localization — all driven by the monitoring engine through a simulated hardware
+> provider. Next up is the live Windows sensor provider (LibreHardwareMonitor) so
+> the same UI reads real hardware. See the [roadmap](#roadmap) and the full
+> [architecture & development plan](docs/PLAN.md).
+
+## Screenshots
+
+> Rendered from the app running on the simulated provider (deterministic demo data).
+
+| Dashboard (dark) | Dashboard (light) |
+|:---:|:---:|
+| ![Dashboard dark](docs/screenshots/dashboard-dark.png) | ![Dashboard light](docs/screenshots/dashboard-light.png) |
+
+| CPU category — identification + live sensor charts |
+|:---:|
+| ![CPU view](docs/screenshots/cpu-dark.png) |
 
 ## Why ChipGauge
 
@@ -44,26 +59,29 @@ application** with a summary dashboard, per-category deep dives, and live charts
 
 ## Features
 
-**Available now (engine, Phase 0)**
+**Available now**
 
+- 🖥️ **Desktop app** — Avalonia shell with a sidebar, a summary **dashboard** of live
+  tiles, per-category views (CPU, GPU, Memory, Storage, Network, Mainboard) and an
+  HWiNFO-style **sensor table** with search.
+- 📈 **Live charts** — a custom, allocation-frugal scrolling area-chart control that
+  renders the Task-Manager-style performance graphs from each sensor's history.
+- 🎨 **Theming** — dark / light / system, theme-aware colors, and hover/press
+  micro-interactions.
+- 🌍 **Localization** — English + German (Deutsch), switchable **live** at runtime,
+  with locale-aware number formatting (e.g. `42,5 °C`).
 - ⚙️ **Monitoring engine** — background sampler with a pluggable provider seam, one
   batched update per tick, resettable min/max/average per sensor.
-- 📈 **Allocation-free history** — fixed-capacity ring buffers per sensor feed the
-  Task-Manager-style scrolling charts without churning garbage on the hot path.
-- 🚨 **Alerts** — duration-aware threshold rules ("CPU > 90 °C for 10 s") with
-  edge-triggered fire/clear events.
 - 💽 **S.M.A.R.T. health** — CrystalDiskInfo-style Good / Caution / Bad verdict logic.
 - 📝 **Snapshot export** — deterministic, culture-invariant system report.
 - 🧪 **Mock provider** — a deterministic simulated machine for demos, screenshots
   and CI (no elevated hardware access required).
 
-**Planned (UI & live data, Phase 1+)**
+**Planned (next)**
 
-- 🖥️ Dashboard of live tiles + category views (CPU, GPU, Memory, Storage, Network,
-  Mainboard, Sensors).
-- 🎨 Fluent 2 design, dark/light theme with system detection, smooth chart animation.
-- 🌍 English + German (Deutsch), switchable at runtime.
-- 🔔 Tray mode, CSV logging, auto-update installer.
+- 🔌 Live **Windows** sensor provider (LibreHardwareMonitor) — real CPU/GPU/board/SMART data.
+- 🚨 Alerts UI, tray mode, CSV logging, settings persistence.
+- 📦 Velopack installer with delta auto-update; macOS provider.
 
 ## Architecture
 
@@ -92,11 +110,12 @@ Full rationale, the framework decision, and the screen-by-screen UI spec are in
 | Concern | Choice |
 |---------|--------|
 | Runtime | .NET 10 (LTS) |
-| UI (Phase 1) | Avalonia UI 11 · Fluent 2 · Skia |
-| Sensors (Windows, Phase 1) | LibreHardwareMonitorLib + WMI |
+| UI | Avalonia UI 12 · Fluent · Skia · CommunityToolkit.Mvvm |
+| DI | Microsoft.Extensions.DependencyInjection |
+| Sensors (Windows, next) | LibreHardwareMonitorLib + WMI |
 | Tests | xUnit v3 · coverlet |
 | CI/CD | GitHub Actions · CodeQL · Dependabot |
-| Packaging (Phase 1) | Velopack (delta auto-update) |
+| Packaging (later) | Velopack (delta auto-update) |
 
 ## Project structure
 
@@ -105,10 +124,11 @@ ChipGauge.slnx
 ├── src/
 │   ├── ChipGauge.Core/            # models, engine, history, alerts, SMART, reporting (no platform code)
 │   ├── ChipGauge.Hardware.Mock/   # deterministic simulated provider
-│   ├── ChipGauge.Hardware.Windows # LibreHardwareMonitor provider (Phase 1)
-│   └── ChipGauge.App/             # Avalonia desktop UI (Phase 1)
+│   └── ChipGauge.App/             # Avalonia desktop UI (MVVM, views, live chart control, i18n)
+│       # ChipGauge.Hardware.Windows (LibreHardwareMonitor provider) lands next
 ├── tests/
-│   └── ChipGauge.Core.Tests/      # xUnit test suite
+│   ├── ChipGauge.Core.Tests/      # engine, alerts, SMART, mock provider
+│   └── ChipGauge.App.Tests/       # view-models + localization completeness
 ├── assets/                        # brand SVGs + generated icons/banner
 ├── build/                         # icon generation script
 ├── docs/                          # architecture & development plan
@@ -131,6 +151,15 @@ dotnet restore ChipGauge.slnx
 dotnet build   ChipGauge.slnx -c Release
 dotnet test    ChipGauge.slnx -c Release
 ```
+
+### Run the app
+
+```bash
+dotnet run --project src/ChipGauge.App
+```
+
+The app currently runs on the simulated provider, so it works on any OS the
+.NET 10 SDK supports — no elevation or real hardware access required.
 
 ### Check formatting (as CI does)
 
@@ -157,10 +186,11 @@ back. Additional locales only require a new resource file.
 | Phase | Scope | Status |
 |-------|-------|--------|
 | **0 — Foundation** | Engine, ring buffers, mock provider, tests, CI, branding | ✅ Done |
-| **1 — Live MVP** | Windows sensor provider, app shell, theming, live dashboard | ⏳ Next |
-| **2 — Categories** | CPU / GPU / Memory / Storage / Network / Mainboard views | 🔜 |
-| **3 — Depth** | Full S.M.A.R.T. view, HWiNFO-style sensor tree, alerts, tray, logging | 🔜 |
-| **4 — Product** | German localization, animations, installer + auto-update, v1.0 | 🔜 |
+| **1 — Live MVP** | App shell, theming, dashboard, category views, sensor table, i18n | ✅ Done (on mock data) |
+| **1b — Live data** | Windows sensor provider (LibreHardwareMonitor), real readings | ⏳ Next |
+| **2 — Categories** | Deeper per-category detail, per-core heatmap, memory SPD | 🔜 |
+| **3 — Depth** | Full S.M.A.R.T. view, alerts UI, tray, CSV logging, settings persistence | 🔜 |
+| **4 — Product** | Animations polish, installer + auto-update, code signing, v1.0 | 🔜 |
 | **5 — macOS** | SMC/IOKit provider, notarized build | 🗺️ |
 
 ## Contributing

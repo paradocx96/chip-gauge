@@ -1,0 +1,35 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Brand + categorical chart colors (theme-independent; readable in both). -->
+  <SolidColorBrush x:Key="BrandBrush" Color="#6D28D9" />
+  <SolidColorBrush x:Key="CpuBrush" Color="#8B5CF6" />
+  <SolidColorBrush x:Key="GpuBrush" Color="#22C55E" />
+  <SolidColorBrush x:Key="MemoryBrush" Color="#F59E0B" />
+  <SolidColorBrush x:Key="StorageBrush" Color="#0EA5E9" />
+  <SolidColorBrush x:Key="NetworkBrush" Color="#EC4899" />
+  <SolidColorBrush x:Key="MainboardBrush" Color="#14B8A6" />
+  <SolidColorBrush x:Key="AccentChartBrush" Color="#22D3EE" />
+
+  <SolidColorBrush x:Key="HealthGoodBrush" Color="#22C55E" />
+  <SolidColorBrush x:Key="HealthCautionBrush" Color="#F59E0B" />
+  <SolidColorBrush x:Key="HealthBadBrush" Color="#EF4444" />
+
+  <ResourceDictionary.ThemeDictionaries>
+    <ResourceDictionary x:Key="Light">
+      <SolidColorBrush x:Key="AppBackgroundBrush" Color="#F4F6FB" />
+      <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#EAEEF6" />
+      <SolidColorBrush x:Key="CardBackgroundBrush" Color="#FFFFFF" />
+      <SolidColorBrush x:Key="CardBorderBrush" Color="#E2E8F0" />
+      <SolidColorBrush x:Key="SubtleTextBrush" Color="#64748B" />
+    </ResourceDictionary>
+    <ResourceDictionary x:Key="Dark">
+      <SolidColorBrush x:Key="AppBackgroundBrush" Color="#0B1020" />
+      <SolidColorBrush x:Key="SidebarBackgroundBrush" Color="#0F1526" />
+      <SolidColorBrush x:Key="CardBackgroundBrush" Color="#161C30" />
+      <SolidColorBrush x:Key="CardBorderBrush" Color="#26304B" />
+      <SolidColorBrush x:Key="SubtleTextBrush" Color="#94A3B8" />
+    </ResourceDictionary>
+  </ResourceDictionary.ThemeDictionaries>
+
+</ResourceDictionary>

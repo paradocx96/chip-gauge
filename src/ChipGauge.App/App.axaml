@@ -1,0 +1,26 @@
+<Application xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="using:ChipGauge.App"
+             xmlns:conv="using:ChipGauge.App.Converters"
+             x:Class="ChipGauge.App.App"
+             RequestedThemeVariant="Default">
+
+  <Application.DataTemplates>
+    <local:ViewLocator />
+  </Application.DataTemplates>
+
+  <Application.Styles>
+    <FluentTheme />
+    <StyleInclude Source="avares://ChipGauge.App/Resources/Styles.axaml" />
+  </Application.Styles>
+
+  <Application.Resources>
+    <ResourceDictionary>
+      <ResourceDictionary.MergedDictionaries>
+        <ResourceInclude Source="avares://ChipGauge.App/Resources/Palette.axaml" />
+        <ResourceInclude Source="avares://ChipGauge.App/Resources/Icons.axaml" />
+      </ResourceDictionary.MergedDictionaries>
+      <conv:IconKeyConverter x:Key="IconConverter" />
+    </ResourceDictionary>
+  </Application.Resources>
+</Application>

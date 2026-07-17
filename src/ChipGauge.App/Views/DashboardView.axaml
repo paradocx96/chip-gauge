@@ -1,0 +1,88 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChipGauge.App.ViewModels"
+             xmlns:ctrl="using:ChipGauge.App.Controls"
+             xmlns:loc="using:ChipGauge.App.Services.Markup"
+             x:Class="ChipGauge.App.Views.DashboardView"
+             x:DataType="vm:DashboardViewModel">
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Spacing="16">
+
+      <!-- System summary card -->
+      <Border Classes="card">
+        <Grid ColumnDefinitions="Auto,*" >
+          <Image Grid.Column="0" Source="/Assets/app-icon.png" Width="52" Height="52"
+                 VerticalAlignment="Top" Margin="0,0,16,0" />
+          <StackPanel Grid.Column="1" Spacing="6">
+            <TextBlock Classes="h2" Text="{Binding Summary.OperatingSystem}" />
+            <WrapPanel>
+              <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,24,0">
+                <TextBlock Classes="subtle" Text="{loc:Localize Dashboard_System}" />
+                <TextBlock Text="{Binding Summary.MachineName}" FontWeight="SemiBold" />
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Spacing="6" Margin="0,0,24,0">
+                <TextBlock Classes="subtle" Text="{loc:Localize Dashboard_Architecture}" />
+                <TextBlock Text="{Binding Summary.Architecture}" FontWeight="SemiBold" />
+              </StackPanel>
+              <StackPanel Orientation="Horizontal" Spacing="6">
+                <TextBlock Classes="subtle" Text="{loc:Localize Dashboard_Uptime}" />
+                <TextBlock Text="{Binding UptimeText}" FontWeight="SemiBold" />
+              </StackPanel>
+            </WrapPanel>
+          </StackPanel>
+        </Grid>
+      </Border>
+
+      <!-- Live tiles -->
+      <ItemsControl ItemsSource="{Binding Tiles}">
+        <ItemsControl.ItemsPanel>
+          <ItemsPanelTemplate>
+            <WrapPanel Orientation="Horizontal" />
+          </ItemsPanelTemplate>
+        </ItemsControl.ItemsPanel>
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:DashboardTileViewModel">
+            <Border Classes="card tile" Width="330" Height="210" Margin="0,0,16,16">
+              <DockPanel>
+                <!-- Header -->
+                <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Spacing="10">
+                  <PathIcon Data="{Binding IconKey, Converter={StaticResource IconConverter}}"
+                            Width="18" Height="18" Foreground="{DynamicResource BrandBrush}" />
+                  <TextBlock Classes="h2" Text="{Binding Title}" TextTrimming="CharacterEllipsis" />
+                </StackPanel>
+
+                <!-- Secondary readouts -->
+                <ItemsControl DockPanel.Dock="Bottom" ItemsSource="{Binding Secondary}" Margin="0,10,0,0">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <StackPanel Orientation="Horizontal" Spacing="18" />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SensorViewModel">
+                      <StackPanel>
+                        <TextBlock Classes="subtle" Text="{Binding Name}" TextTrimming="CharacterEllipsis" />
+                        <TextBlock Text="{Binding Value}" FontWeight="SemiBold" />
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+                <!-- Primary metric + chart -->
+                <Grid RowDefinitions="Auto,*" Margin="0,8,0,0">
+                  <TextBlock Grid.Row="0" Classes="metric" Text="{Binding Primary.Value}" />
+                  <ctrl:LiveChart Grid.Row="1" Margin="0,6,0,0"
+                                  Values="{Binding Primary.Values}"
+                                  IsPercentage="{Binding Primary.IsPercentage}"
+                                  Stroke="{DynamicResource AccentChartBrush}" />
+                </Grid>
+              </DockPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>
