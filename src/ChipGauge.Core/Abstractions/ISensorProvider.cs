@@ -41,6 +41,14 @@ public interface ISensorProvider : IDisposable
     bool IsElevated { get; }
 
     /// <summary>
+    /// True when low-level, driver-backed sensors (CPU/GPU/board temperatures and
+    /// power) are actually being read. When the process is elevated but this is
+    /// false, the kernel driver is present but blocked — commonly by Windows
+    /// Memory Integrity / Core Isolation.
+    /// </summary>
+    bool HasLowLevelSensors { get; }
+
+    /// <summary>
     /// Returns the discovered hardware tree. The returned <see cref="HardwareItem"/>
     /// instances are stable for the lifetime of the provider; <see cref="Sample"/>
     /// updates values by sensor id rather than replacing the tree.

@@ -61,6 +61,14 @@ public sealed class LibreHardwareProvider : ISensorProvider, IHardwareInfoProvid
                 _hardware.Add(BuildItem(hardware));
             }
 
+            // If LibreHardwareMonitor didn't enumerate any drive, fall back to WMI
+            // so at least the physical disks (model, capacity) are listed.
+            if (!_hardware.Any(h => h.Kind == HardwareKind.Storage))
+            {
+                AddWmiStorage();
+            }
+
+            HasLowLevelSensors = DetectLowLevelSensors();
             IsAvailable = _hardware.Count > 0;
         }
         catch (Exception ex) when (ex is DllNotFoundException or InvalidOperationException or UnauthorizedAccessException)
@@ -83,6 +91,9 @@ public sealed class LibreHardwareProvider : ISensorProvider, IHardwareInfoProvid
 
     /// <inheritdoc />
     public bool IsElevated { get; } = DetectElevation();
+
+    /// <inheritdoc />
+    public bool HasLowLevelSensors { get; }
 
     /// <inheritdoc />
     public IReadOnlyList<HardwareItem> GetHardware() => _hardware;
@@ -253,5 +264,65 @@ public sealed class LibreHardwareProvider : ISensorProvider, IHardwareInfoProvid
         {
             return false;
         }
+    }
+
+    // Driver-backed sensors (CPU/GPU/board temperature or power) are the signal
+    // that the kernel driver is really working. Battery voltage etc. are excluded
+    // because they come from ACPI/WMI and do not need the driver.
+    private bool DetectLowLevelSensors() => _hardware
+        .Where(h => h.Kind is HardwareKind.Cpu or HardwareKind.Gpu or HardwareKind.Motherboard)
+        .SelectMany(h => h.EnumerateSensors())
+        .Any(s => (s.Kind == SensorKind.Temperature && s.Value is not null)
+            || (s.Kind == SensorKind.Power && s.Value is > 0f));
+
+    private void AddWmiStorage()
+    {
+        try
+        {
+            using var searcher = new System.Management.ManagementObjectSearcher(
+                "SELECT Model, Size, InterfaceType, MediaType FROM Win32_DiskDrive");
+            var index = 0;
+            foreach (System.Management.ManagementBaseObject drive in searcher.Get())
+            {
+                string model = drive["Model"]?.ToString()?.Trim() ?? "Disk";
+                var item = new HardwareItem($"wmi/disk/{index++}", model, HardwareKind.Storage);
+
+                if (drive["Size"] is not null &&
+                    ulong.TryParse(drive["Size"]?.ToString(), out ulong size) && size > 0)
+                {
+                    item.SetProperty("Capacity", FormatCapacity(size));
+                }
+
+                if (drive["InterfaceType"]?.ToString() is { Length: > 0 } iface)
+                {
+                    item.SetProperty("Interface", iface);
+                }
+
+                if (drive["MediaType"]?.ToString() is { Length: > 0 } media)
+                {
+                    item.SetProperty("Media", media);
+                }
+
+                item.SetProperty("Source", "WMI (SMART unavailable)");
+                _hardware.Add(item);
+            }
+        }
+        catch (System.Management.ManagementException)
+        {
+            // WMI storage query failed — leave storage empty.
+        }
+        catch (Exception ex) when (ex is UnauthorizedAccessException or InvalidOperationException)
+        {
+            // Ignore — storage stays empty.
+        }
+    }
+
+    private static string FormatCapacity(ulong bytes)
+    {
+        const double Gb = 1_000_000_000d;
+        const double Tb = 1_000_000_000_000d;
+        return bytes >= Tb
+            ? string.Create(System.Globalization.CultureInfo.InvariantCulture, $"{bytes / Tb:0.##} TB")
+            : string.Create(System.Globalization.CultureInfo.InvariantCulture, $"{bytes / Gb:0} GB");
     }
 }

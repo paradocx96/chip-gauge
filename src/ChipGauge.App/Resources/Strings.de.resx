@@ -19,6 +19,7 @@
 
   <data name="Status_SimulatedData" xml:space="preserve"><value>Simulierte Daten werden angezeigt (Demo-Anbieter)</value></data>
   <data name="Elevation_Notice" xml:space="preserve"><value>Ohne Administratorrechte gestartet — Temperaturen, Leistung, Lüfterdrehzahlen und Laufwerkszustand sind nicht verfügbar. Starten Sie ChipGauge als Administrator für vollständige Sensordaten.</value></data>
+  <data name="Driver_Notice" xml:space="preserve"><value>Temperaturen, Leistung und Laufwerkszustand sind trotz Administratorrechten nicht verfügbar. Meist blockiert die Windows-Speicherintegrität (Kernisolierung) den Überwachungstreiber. Deaktivieren Sie sie unter Windows-Sicherheit ▸ Gerätesicherheit ▸ Kernisolierung und starten Sie neu.</value></data>
 
   <data name="Dashboard_System" xml:space="preserve"><value>System</value></data>
   <data name="Dashboard_Uptime" xml:space="preserve"><value>Betriebszeit</value></data>
@@ -32,6 +33,7 @@
   <data name="Category_Identification" xml:space="preserve"><value>Identifikation</value></data>
   <data name="Category_Sensors" xml:space="preserve"><value>Sensoren</value></data>
   <data name="Category_NoData" xml:space="preserve"><value>Keine Geräte in dieser Kategorie erkannt.</value></data>
+  <data name="Category_NoReadableSensors" xml:space="preserve"><value>Erkannt, aber dieses Gerät stellt keine auslesbaren Sensoren bereit (häufig bei gesperrten OEM-Laptops oder wenn der Überwachungstreiber blockiert ist).</value></data>
 
   <data name="Sensors_Search" xml:space="preserve"><value>Sensoren suchen…</value></data>
   <data name="Sensors_ColDevice" xml:space="preserve"><value>Gerät</value></data>

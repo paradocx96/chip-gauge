@@ -16,10 +16,14 @@
       <ItemsControl ItemsSource="{Binding Items}">
         <ItemsControl.ItemTemplate>
           <DataTemplate x:DataType="vm:HardwareItemViewModel">
-            <Border Classes="card" Margin="0,0,0,16" IsVisible="{Binding HasContent}">
+            <Border Classes="card" Margin="0,0,0,16">
               <StackPanel Spacing="14">
 
                 <TextBlock Classes="h2" Text="{Binding Name}" />
+
+                <!-- Detected but no readable sensors (e.g. locked-down mainboard EC) -->
+                <TextBlock Classes="subtle" IsVisible="{Binding IsEmpty}" TextWrapping="Wrap"
+                           Text="{loc:Localize Category_NoReadableSensors}" />
 
                 <!-- Identification -->
                 <StackPanel Spacing="6" IsVisible="{Binding HasProperties}">

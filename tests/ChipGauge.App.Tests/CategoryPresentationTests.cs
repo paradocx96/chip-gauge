@@ -40,6 +40,27 @@ public sealed class CategoryPresentationTests
     }
 
     [Fact]
+    public void Device_WithNoSensorsOrProperties_IsEmpty()
+    {
+        var device = new HardwareItem("mb", "HP 89BD", HardwareKind.Motherboard);
+        var vm = new HardwareItemViewModel(device, new HistoryStore(), new Localizer());
+
+        Assert.True(vm.IsEmpty);
+        Assert.False(vm.HasContent);
+        Assert.False(vm.HasVisibleSensors);
+    }
+
+    [Fact]
+    public void Device_WithOnlyProperties_IsNotEmpty()
+    {
+        var device = new HardwareItem("disk", "Some SSD", HardwareKind.Storage).SetProperty("Capacity", "512 GB");
+        var vm = new HardwareItemViewModel(device, new HistoryStore(), new Localizer());
+
+        Assert.False(vm.IsEmpty);
+        Assert.True(vm.HasProperties);
+    }
+
+    [Fact]
     public void ThroughputSensor_FormatsBytesPerSecondHumanReadably()
     {
         var sensor = new Sensor("net", "Download", SensorKind.Throughput);
