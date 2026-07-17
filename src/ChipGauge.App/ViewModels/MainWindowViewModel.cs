@@ -41,6 +41,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
         Theme = theme;
         IsSimulated = provider.IsSimulated;
         ShowElevationNotice = provider.RequiresElevation && !provider.IsElevated;
+        ShowDriverNotice = provider.RequiresElevation && provider.IsElevated && !provider.HasLowLevelSensors;
 
         Pages =
         [
@@ -75,6 +76,9 @@ public sealed partial class MainWindowViewModel : ObservableObject
 
     /// <summary>True when the app is running without the elevation needed for full sensors.</summary>
     public bool ShowElevationNotice { get; }
+
+    /// <summary>True when elevated but the low-level driver is blocked (e.g. Memory Integrity).</summary>
+    public bool ShowDriverNotice { get; }
 
     /// <summary>Forwards a tick to the visible page.</summary>
     public void OnTick() => SelectedPage.OnTick();

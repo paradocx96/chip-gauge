@@ -56,6 +56,9 @@ public sealed class MockSensorProvider : ISensorProvider, IHardwareInfoProvider
     /// <inheritdoc />
     public bool IsElevated => true;
 
+    /// <inheritdoc />
+    public bool HasLowLevelSensors => true;
+
     /// <summary>The number of ticks (sampling passes) produced so far.</summary>
     public long Tick => _tick;
 

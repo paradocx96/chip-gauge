@@ -64,6 +64,9 @@ public sealed class HardwareItemViewModel : ObservableObject
     /// <summary>True when the device has anything worth showing (readings, identity, or sub-devices).</summary>
     public bool HasContent => HasVisibleSensors || HasProperties || SubItems.Any(s => s.HasContent);
 
+    /// <summary>True when the device is detected but exposes nothing readable.</summary>
+    public bool IsEmpty => !HasContent;
+
     /// <summary>Refreshes this device and every nested device, regrouping only when visibility changes.</summary>
     public void Refresh()
     {
@@ -85,6 +88,7 @@ public sealed class HardwareItemViewModel : ObservableObject
             OnPropertyChanged(nameof(VisibleSensors));
             OnPropertyChanged(nameof(HasVisibleSensors));
             OnPropertyChanged(nameof(HasContent));
+            OnPropertyChanged(nameof(IsEmpty));
         }
     }
 

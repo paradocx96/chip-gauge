@@ -65,6 +65,7 @@
 
   <data name="Status_SimulatedData" xml:space="preserve"><value>Showing simulated data (demo provider)</value></data>
   <data name="Elevation_Notice" xml:space="preserve"><value>Running without administrator rights — temperatures, power, fan speeds and drive health are unavailable. Restart ChipGauge as administrator for full sensor data.</value></data>
+  <data name="Driver_Notice" xml:space="preserve"><value>Temperatures, power and drive health are unavailable even though ChipGauge is elevated. This usually means Windows Memory Integrity (Core Isolation) is blocking the monitoring driver. Turn it off in Windows Security ▸ Device security ▸ Core isolation, then reboot.</value></data>
 
   <data name="Dashboard_System" xml:space="preserve"><value>System</value></data>
   <data name="Dashboard_Uptime" xml:space="preserve"><value>Uptime</value></data>
@@ -78,6 +79,7 @@
   <data name="Category_Identification" xml:space="preserve"><value>Identification</value></data>
   <data name="Category_Sensors" xml:space="preserve"><value>Sensors</value></data>
   <data name="Category_NoData" xml:space="preserve"><value>No devices detected in this category.</value></data>
+  <data name="Category_NoReadableSensors" xml:space="preserve"><value>Detected, but this device exposes no readable sensors (often the case on locked-down OEM laptops or when the monitoring driver is blocked).</value></data>
 
   <data name="Sensors_Search" xml:space="preserve"><value>Search sensors…</value></data>
   <data name="Sensors_ColDevice" xml:space="preserve"><value>Device</value></data>
