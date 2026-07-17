@@ -41,6 +41,7 @@ public static class ServiceRegistration
         services.AddSingleton<Localizer>();
         services.AddSingleton<ThemeService>();
         services.AddSingleton<AppSettings>();
+        services.AddSingleton<SettingsService>();
 
         // View-models.
         services.AddSingleton<MainWindowViewModel>();

@@ -142,6 +142,20 @@ public sealed class MonitoringEngineTests
         Assert.Throws<ObjectDisposedException>(() => engine.SampleOnce());
     }
 
+    [Fact]
+    public async Task Interval_SetterClampsAndIsReported()
+    {
+        var (item, _) = ScriptedSensorProvider.SingleSensor();
+        var provider = new ScriptedSensorProvider([item], _ => []);
+        await using var engine = new MonitoringEngine(provider);
+
+        engine.Interval = TimeSpan.FromSeconds(3);
+        Assert.Equal(TimeSpan.FromSeconds(3), engine.Interval);
+
+        engine.Interval = TimeSpan.FromMinutes(1); // above the maximum -> clamped
+        Assert.Equal(MonitoringOptions.MaxInterval, engine.Interval);
+    }
+
     private static async Task WaitUntilAsync(Func<bool> condition, TimeSpan timeout)
     {
         DateTime deadline = DateTime.UtcNow + timeout;

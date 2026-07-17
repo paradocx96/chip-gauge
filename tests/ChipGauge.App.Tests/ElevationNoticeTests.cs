@@ -18,7 +18,8 @@ public sealed class ElevationNoticeTests
         var provider = new FakeProvider(requiresElevation, isElevated);
         await using var engine = new MonitoringEngine(provider);
         var main = new MainWindowViewModel(
-            new Localizer(), new ThemeService(), new AppSettings(), engine, provider, provider);
+            new Localizer(), new ThemeService(), new AppSettings(), new SettingsService(),
+            engine, provider, provider, new Core.Reporting.SnapshotService());
 
         Assert.Equal(expected, main.ShowElevationNotice);
     }

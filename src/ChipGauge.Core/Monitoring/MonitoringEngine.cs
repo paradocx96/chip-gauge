@@ -24,6 +24,7 @@ public sealed class MonitoringEngine : IAsyncDisposable
 
     private CancellationTokenSource? _cts;
     private Task? _loop;
+    private PeriodicTimer? _timer;
     private bool _disposed;
 
     /// <summary>Creates an engine over a provider.</summary>
@@ -60,6 +61,23 @@ public sealed class MonitoringEngine : IAsyncDisposable
 
     /// <summary>The number of distinct sensors being tracked.</summary>
     public int SensorCount => _sensorsById.Count;
+
+    /// <summary>
+    /// The sampling interval (clamped by <see cref="MonitoringOptions"/>). Setting it
+    /// takes effect immediately, even while the background loop is running.
+    /// </summary>
+    public TimeSpan Interval
+    {
+        get => _options.Interval;
+        set
+        {
+            _options.Interval = value; // clamps
+            if (_timer is not null)
+            {
+                _timer.Period = _options.Interval;
+            }
+        }
+    }
 
     /// <summary>True while the background sampling loop is running.</summary>
     public bool IsRunning => _loop is { IsCompleted: false };
@@ -146,7 +164,8 @@ public sealed class MonitoringEngine : IAsyncDisposable
         // Emit an immediate first sample so the UI is populated without waiting a full tick.
         SampleOnce();
 
-        using var timer = new PeriodicTimer(_options.Interval);
+        var timer = new PeriodicTimer(_options.Interval);
+        _timer = timer;
         try
         {
             while (await timer.WaitForNextTickAsync(cancellationToken).ConfigureAwait(false))
@@ -157,6 +176,11 @@ public sealed class MonitoringEngine : IAsyncDisposable
         catch (OperationCanceledException)
         {
             // Expected on cancellation.
+        }
+        finally
+        {
+            _timer = null;
+            timer.Dispose();
         }
     }
 

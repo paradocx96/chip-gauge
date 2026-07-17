@@ -2,6 +2,7 @@ using ChipGauge.App.Services;
 using ChipGauge.Core.Abstractions;
 using ChipGauge.Core.Models;
 using ChipGauge.Core.Monitoring;
+using ChipGauge.Core.Reporting;
 using CommunityToolkit.Mvvm.ComponentModel;
 using CommunityToolkit.Mvvm.Input;
 
@@ -21,16 +22,20 @@ public sealed partial class MainWindowViewModel : ObservableObject
         Localizer localizer,
         ThemeService theme,
         AppSettings settings,
+        SettingsService settingsService,
         MonitoringEngine engine,
         IHardwareInfoProvider info,
-        ISensorProvider provider)
+        ISensorProvider provider,
+        SnapshotService snapshots)
     {
         ArgumentNullException.ThrowIfNull(localizer);
         ArgumentNullException.ThrowIfNull(theme);
         ArgumentNullException.ThrowIfNull(settings);
+        ArgumentNullException.ThrowIfNull(settingsService);
         ArgumentNullException.ThrowIfNull(engine);
         ArgumentNullException.ThrowIfNull(info);
         ArgumentNullException.ThrowIfNull(provider);
+        ArgumentNullException.ThrowIfNull(snapshots);
 
         Localizer = localizer;
         Theme = theme;
@@ -47,7 +52,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
             new CategoryViewModel(localizer, "Nav_Network", "network", HardwareKind.Network, engine),
             new CategoryViewModel(localizer, "Nav_Mainboard", "mainboard", HardwareKind.Motherboard, engine),
             new SensorsViewModel(localizer, engine),
-            new SettingsViewModel(localizer, theme, settings),
+            new SettingsViewModel(localizer, theme, settings, engine, settingsService, snapshots, info),
         ];
 
         _selectedPage = Pages[0];

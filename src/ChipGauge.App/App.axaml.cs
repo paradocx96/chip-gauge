@@ -23,14 +23,25 @@ public partial class App : Application
         ServiceProvider provider = ServiceRegistration.Build();
         Services = provider;
 
-        // Publish localized strings into the resource dictionary so the Localize
-        // markup extension (a DynamicResource) can resolve and live-update them.
+        // Load persisted settings and apply them before the UI is built.
+        var settings = provider.GetRequiredService<AppSettings>();
+        var settingsService = provider.GetRequiredService<SettingsService>();
+        settingsService.LoadInto(settings);
+
         var localizer = provider.GetRequiredService<Localizer>();
         Resources["Loc"] = localizer;
-        localizer.PublishResources();
+        localizer.SetLanguage(settings.Language);
+        localizer.PublishResources(); // publish in the restored language
+        DisplaySettings.TemperatureUnit = settings.TemperatureUnit;
 
-        // Apply the persisted theme before the first window shows.
-        provider.GetRequiredService<ThemeService>().Apply();
+        var themeService = provider.GetRequiredService<ThemeService>();
+        themeService.Theme = settings.Theme;
+        themeService.Apply();
+
+        provider.GetRequiredService<MonitoringEngine>().Interval = TimeSpan.FromSeconds(settings.PollingSeconds);
+
+        // From here on, changes are written back to disk.
+        settingsService.PersistenceEnabled = true;
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
