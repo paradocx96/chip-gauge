@@ -29,6 +29,7 @@
   <ItemGroup>
     <ProjectReference Include="..\ChipGauge.Core\ChipGauge.Core.csproj" />
     <ProjectReference Include="..\ChipGauge.Hardware.Mock\ChipGauge.Hardware.Mock.csproj" />
+    <ProjectReference Include="..\ChipGauge.Hardware.Windows\ChipGauge.Hardware.Windows.csproj" />
   </ItemGroup>
 
   <!-- Bundle branding assets from the repo without duplicating the files. -->

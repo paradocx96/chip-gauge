@@ -20,13 +20,17 @@ drive health.
 
 ---
 
-> **Project status — Phase 1 (Live MVP).**
+> **Project status — Phase 1b (Live Windows data).**
 > The Avalonia desktop app is up: a navigable shell, a live dashboard, per-category
 > views, an HWiNFO-style sensor table, dark/light theming and full English/German
-> localization — all driven by the monitoring engine through a simulated hardware
-> provider. Next up is the live Windows sensor provider (LibreHardwareMonitor) so
-> the same UI reads real hardware. See the [roadmap](#roadmap) and the full
+> localization. On **Windows** it now reads real hardware via a
+> **LibreHardwareMonitor** provider; on other platforms (and in CI) it falls back
+> to a deterministic simulated provider. See the [roadmap](#roadmap) and the full
 > [architecture & development plan](docs/PLAN.md).
+>
+> _Note: the live provider is implemented and unit-tested, but real-sensor readout
+> can only be validated on Windows hardware — the screenshots below use the
+> simulated provider._
 
 ## Install
 
@@ -42,8 +46,12 @@ install.
    until the binaries are code-signed — see [note](#a-note-on-releases).)
 
 > There is no MSI/installer yet — that (plus auto-update) arrives with the
-> Velopack packaging step. Until the live Windows sensor provider lands, the app
-> shows **simulated** data.
+> Velopack packaging step.
+
+On Windows the app reads **real hardware**; **run it as administrator** for full
+sensor coverage (temperatures, voltages, fan RPM, SMART — these need the
+LibreHardwareMonitor kernel driver). Without elevation it still runs, showing the
+subset readable without the driver.
 
 ### A note on releases
 
@@ -95,6 +103,9 @@ application** with a summary dashboard, per-category deep dives, and live charts
   micro-interactions.
 - 🌍 **Localization** — English + German (Deutsch), switchable **live** at runtime,
   with locale-aware number formatting (e.g. `42,5 °C`).
+- 🔌 **Live Windows data** — a LibreHardwareMonitor provider reads real CPU / GPU /
+  memory / storage / network / board sensors; the app auto-selects it on Windows
+  and falls back to the simulated provider elsewhere.
 - ⚙️ **Monitoring engine** — background sampler with a pluggable provider seam, one
   batched update per tick, resettable min/max/average per sensor.
 - 💽 **S.M.A.R.T. health** — CrystalDiskInfo-style Good / Caution / Bad verdict logic.
@@ -104,8 +115,8 @@ application** with a summary dashboard, per-category deep dives, and live charts
 
 **Planned (next)**
 
-- 🔌 Live **Windows** sensor provider (LibreHardwareMonitor) — real CPU/GPU/board/SMART data.
-- 🚨 Alerts UI, tray mode, CSV logging, settings persistence.
+- 🧭 Richer identification (CPU-Z-level: socket, caches, memory SPD/XMP) via WMI/CPUID.
+- 🚨 Alerts UI, dedicated S.M.A.R.T. view, tray mode, CSV logging, settings persistence.
 - 📦 Velopack installer with delta auto-update; macOS provider.
 
 ## Architecture
@@ -122,7 +133,7 @@ graph TB
         ENG --> SNAP[SnapshotService]
         ENG --> IFACE[[ISensorProvider]]
     end
-    IFACE --> WIN["ChipGauge.Hardware.Windows<br/>(LibreHardwareMonitor · Phase 1)"]
+    IFACE --> WIN["ChipGauge.Hardware.Windows<br/>(LibreHardwareMonitor)"]
     IFACE --> MOCK[ChipGauge.Hardware.Mock]
     IFACE -. planned .-> MAC["ChipGauge.Hardware.MacOS"]
 ```
@@ -147,13 +158,13 @@ Full rationale, the framework decision, and the screen-by-screen UI spec are in
 ```
 ChipGauge.slnx
 ├── src/
-│   ├── ChipGauge.Core/            # models, engine, history, alerts, SMART, reporting (no platform code)
-│   ├── ChipGauge.Hardware.Mock/   # deterministic simulated provider
-│   └── ChipGauge.App/             # Avalonia desktop UI (MVVM, views, live chart control, i18n)
-│       # ChipGauge.Hardware.Windows (LibreHardwareMonitor provider) lands next
+│   ├── ChipGauge.Core/              # models, engine, history, alerts, SMART, reporting (no platform code)
+│   ├── ChipGauge.Hardware.Mock/     # deterministic simulated provider
+│   ├── ChipGauge.Hardware.Windows/  # live provider (LibreHardwareMonitor)
+│   └── ChipGauge.App/               # Avalonia desktop UI (MVVM, views, live chart control, i18n)
 ├── tests/
-│   ├── ChipGauge.Core.Tests/      # engine, alerts, SMART, mock provider
-│   └── ChipGauge.App.Tests/       # view-models + localization completeness
+│   ├── ChipGauge.Core.Tests/        # engine, alerts, SMART, mock provider
+│   └── ChipGauge.App.Tests/         # view-models, localization, provider selection, mappers
 ├── assets/                        # brand SVGs + generated icons/banner
 ├── build/                         # icon generation script
 ├── docs/                          # architecture & development plan
@@ -211,9 +222,9 @@ back. Additional locales only require a new resource file.
 | Phase | Scope | Status |
 |-------|-------|--------|
 | **0 — Foundation** | Engine, ring buffers, mock provider, tests, CI, branding | ✅ Done |
-| **1 — Live MVP** | App shell, theming, dashboard, category views, sensor table, i18n | ✅ Done (on mock data) |
-| **1b — Live data** | Windows sensor provider (LibreHardwareMonitor), real readings | ⏳ Next |
-| **2 — Categories** | Deeper per-category detail, per-core heatmap, memory SPD | 🔜 |
+| **1 — Live MVP** | App shell, theming, dashboard, category views, sensor table, i18n | ✅ Done |
+| **1b — Live data** | Windows sensor provider (LibreHardwareMonitor), provider auto-select | ✅ Done (pending Windows-hardware validation) |
+| **2 — Categories** | Richer identification (socket/caches/SPD), per-core heatmap | 🔜 |
 | **3 — Depth** | Full S.M.A.R.T. view, alerts UI, tray, CSV logging, settings persistence | 🔜 |
 | **4 — Product** | Animations polish, installer + auto-update, code signing, v1.0 | 🔜 |
 | **5 — macOS** | SMC/IOKit provider, notarized build | 🗺️ |

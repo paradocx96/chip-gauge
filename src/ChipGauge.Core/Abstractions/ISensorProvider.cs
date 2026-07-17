@@ -27,6 +27,12 @@ public interface ISensorProvider : IDisposable
     bool RequiresElevation { get; }
 
     /// <summary>
+    /// True when the readings are simulated rather than read from real hardware.
+    /// The UI surfaces a "demo data" indicator when this is set.
+    /// </summary>
+    bool IsSimulated { get; }
+
+    /// <summary>
     /// Returns the discovered hardware tree. The returned <see cref="HardwareItem"/>
     /// instances are stable for the lifetime of the provider; <see cref="Sample"/>
     /// updates values by sensor id rather than replacing the tree.
