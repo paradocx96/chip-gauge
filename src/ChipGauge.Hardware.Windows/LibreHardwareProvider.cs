@@ -1,5 +1,7 @@
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
+using System.Security;
+using System.Security.Principal;
 using ChipGauge.Core.Abstractions;
 using ChipGauge.Core.Models;
 using ChipGauge.Core.Storage;
@@ -78,6 +80,9 @@ public sealed class LibreHardwareProvider : ISensorProvider, IHardwareInfoProvid
 
     /// <inheritdoc />
     public bool IsSimulated => false;
+
+    /// <inheritdoc />
+    public bool IsElevated { get; } = DetectElevation();
 
     /// <inheritdoc />
     public IReadOnlyList<HardwareItem> GetHardware() => _hardware;
@@ -236,4 +241,17 @@ public sealed class LibreHardwareProvider : ISensorProvider, IHardwareInfoProvid
 
     private static string SensorName(ISensor sensor) =>
         string.IsNullOrWhiteSpace(sensor.Name) ? sensor.SensorType.ToString() : sensor.Name;
+
+    private static bool DetectElevation()
+    {
+        try
+        {
+            using WindowsIdentity identity = WindowsIdentity.GetCurrent();
+            return new WindowsPrincipal(identity).IsInRole(WindowsBuiltInRole.Administrator);
+        }
+        catch (SecurityException)
+        {
+            return false;
+        }
+    }
 }

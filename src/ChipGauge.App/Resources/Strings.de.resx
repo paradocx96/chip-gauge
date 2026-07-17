@@ -18,6 +18,7 @@
   <data name="Nav_Settings" xml:space="preserve"><value>Einstellungen</value></data>
 
   <data name="Status_SimulatedData" xml:space="preserve"><value>Simulierte Daten werden angezeigt (Demo-Anbieter)</value></data>
+  <data name="Elevation_Notice" xml:space="preserve"><value>Ohne Administratorrechte gestartet — Temperaturen, Leistung, Lüfterdrehzahlen und Laufwerkszustand sind nicht verfügbar. Starten Sie ChipGauge als Administrator für vollständige Sensordaten.</value></data>
 
   <data name="Dashboard_System" xml:space="preserve"><value>System</value></data>
   <data name="Dashboard_Uptime" xml:space="preserve"><value>Betriebszeit</value></data>
