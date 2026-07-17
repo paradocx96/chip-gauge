@@ -28,6 +28,31 @@ drive health.
 > the same UI reads real hardware. See the [roadmap](#roadmap) and the full
 > [architecture & development plan](docs/PLAN.md).
 
+## Install
+
+**Windows 10 / 11 (x64 or ARM64).** ChipGauge ships as a **self-contained,
+single-file `.exe`** — the .NET runtime is bundled, so there's nothing else to
+install.
+
+1. Go to the [**Releases**](https://github.com/paradocx96/system-app/releases) page.
+2. Download either:
+   - `ChipGauge-<version>-win-x64.exe` — the portable app; just run it, or
+   - `ChipGauge-<version>-win-x64.zip` — the same `.exe` zipped.
+3. Double-click `ChipGauge.exe`. (Windows SmartScreen may warn on first launch
+   until the binaries are code-signed — see [note](#a-note-on-releases).)
+
+> There is no MSI/installer yet — that (plus auto-update) arrives with the
+> Velopack packaging step. Until the live Windows sensor provider lands, the app
+> shows **simulated** data.
+
+### A note on releases
+
+Releases are produced by the [`release`](.github/workflows/release.yml) workflow.
+Binaries are **not code-signed yet**, so SmartScreen/antivirus may flag them on
+first run — signing is a launch-blocking to-do tracked in the
+[plan](docs/PLAN.md#11-risks--mitigations). Prefer building from source if that's
+a concern.
+
 ## Screenshots
 
 > Rendered from the app running on the simulated provider (deterministic demo data).

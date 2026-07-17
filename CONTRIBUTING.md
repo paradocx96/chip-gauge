@@ -52,6 +52,19 @@ keep providers as thin adapters and the UI as a thin presentation layer.
 - Ensure the four build-loop commands pass before opening a PR.
 - Describe what changed and why; link any related issue.
 
+## Cutting a release (maintainers)
+
+Releases are automated by [`.github/workflows/release.yml`](.github/workflows/release.yml),
+which builds the self-contained Windows `.exe` and publishes a GitHub Release.
+Two equivalent ways to trigger it:
+
+- **Auto-tag:** Actions → **Release** → *Run workflow*, enter a version (e.g.
+  `1.0.0`). It runs the tests, creates and pushes tag `v1.0.0`, then publishes.
+- **Tag push:** `git tag v1.0.0 && git push origin v1.0.0`.
+
+The workflow runs on Linux (cheap) and cross-publishes `win-x64` + `win-arm64`.
+Binaries are unsigned until a code-signing certificate is in place.
+
 ## Branding assets
 
 SVG masters live in `assets/`. If you change one, regenerate the rasters and
