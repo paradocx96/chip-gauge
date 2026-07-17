@@ -99,4 +99,19 @@
 
   <data name="Unit_Celsius" xml:space="preserve"><value>Celsius (°C)</value></data>
   <data name="Unit_Fahrenheit" xml:space="preserve"><value>Fahrenheit (°F)</value></data>
+
+  <data name="SensorGroup_Load" xml:space="preserve"><value>Load</value></data>
+  <data name="SensorGroup_Clock" xml:space="preserve"><value>Clocks</value></data>
+  <data name="SensorGroup_Temperature" xml:space="preserve"><value>Temperatures</value></data>
+  <data name="SensorGroup_Voltage" xml:space="preserve"><value>Voltages</value></data>
+  <data name="SensorGroup_Current" xml:space="preserve"><value>Currents</value></data>
+  <data name="SensorGroup_Power" xml:space="preserve"><value>Power</value></data>
+  <data name="SensorGroup_Fan" xml:space="preserve"><value>Fans</value></data>
+  <data name="SensorGroup_Flow" xml:space="preserve"><value>Flow</value></data>
+  <data name="SensorGroup_Throughput" xml:space="preserve"><value>Throughput</value></data>
+  <data name="SensorGroup_Level" xml:space="preserve"><value>Levels</value></data>
+  <data name="SensorGroup_Data" xml:space="preserve"><value>Data</value></data>
+  <data name="SensorGroup_Control" xml:space="preserve"><value>Controls</value></data>
+  <data name="SensorGroup_Factor" xml:space="preserve"><value>Factors</value></data>
+  <data name="SensorGroup_Other" xml:space="preserve"><value>Other</value></data>
 </root>

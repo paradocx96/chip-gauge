@@ -16,7 +16,7 @@
       <ItemsControl ItemsSource="{Binding Items}">
         <ItemsControl.ItemTemplate>
           <DataTemplate x:DataType="vm:HardwareItemViewModel">
-            <Border Classes="card" Margin="0,0,0,16">
+            <Border Classes="card" Margin="0,0,0,16" IsVisible="{Binding HasContent}">
               <StackPanel Spacing="14">
 
                 <TextBlock Classes="h2" Text="{Binding Name}" />
@@ -36,51 +36,57 @@
                   </ItemsControl>
                 </StackPanel>
 
-                <!-- Sensors -->
-                <StackPanel Spacing="8" IsVisible="{Binding HasSensors}">
-                  <TextBlock Classes="subtle" Text="{loc:Localize Category_Sensors}" />
-                  <ItemsControl ItemsSource="{Binding Sensors}">
-                    <ItemsControl.ItemsPanel>
-                      <ItemsPanelTemplate>
-                        <WrapPanel Orientation="Horizontal" />
-                      </ItemsPanelTemplate>
-                    </ItemsControl.ItemsPanel>
-                    <ItemsControl.ItemTemplate>
-                      <DataTemplate x:DataType="vm:SensorViewModel">
-                        <Border Width="280" Height="150" Margin="0,0,14,14" Padding="14"
-                                CornerRadius="10"
-                                Background="{DynamicResource AppBackgroundBrush}">
-                          <DockPanel>
-                            <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto">
-                              <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
-                                         TextTrimming="CharacterEllipsis" />
-                              <TextBlock Grid.Column="1" Text="{Binding Value}" FontWeight="Bold"
-                                         Foreground="{DynamicResource BrandBrush}" />
-                            </Grid>
-                            <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,*,*" Margin="0,8,0,0">
-                              <StackPanel>
-                                <TextBlock Classes="subtle" Text="{loc:Localize Common_Min}" />
-                                <TextBlock Text="{Binding Min}" FontSize="12" />
-                              </StackPanel>
-                              <StackPanel Grid.Column="1">
-                                <TextBlock Classes="subtle" Text="{loc:Localize Common_Max}" />
-                                <TextBlock Text="{Binding Max}" FontSize="12" />
-                              </StackPanel>
-                              <StackPanel Grid.Column="2">
-                                <TextBlock Classes="subtle" Text="{loc:Localize Common_Avg}" />
-                                <TextBlock Text="{Binding Average}" FontSize="12" />
-                              </StackPanel>
-                            </Grid>
-                            <ctrl:LiveChart Margin="0,8,0,8"
-                                            Values="{Binding Values}"
-                                            IsPercentage="{Binding IsPercentage}"
-                                            Stroke="{DynamicResource AccentChartBrush}" />
-                          </DockPanel>
-                        </Border>
-                      </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                  </ItemsControl>
-                </StackPanel>
+                <!-- Sensors grouped by kind -->
+                <ItemsControl ItemsSource="{Binding SensorGroups}" IsVisible="{Binding HasVisibleSensors}">
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:SensorGroupViewModel">
+                      <StackPanel Spacing="8" Margin="0,4,0,4">
+                        <TextBlock Classes="subtle" Text="{Binding Title}" />
+                        <ItemsControl ItemsSource="{Binding Sensors}">
+                          <ItemsControl.ItemsPanel>
+                            <ItemsPanelTemplate>
+                              <WrapPanel Orientation="Horizontal" />
+                            </ItemsPanelTemplate>
+                          </ItemsControl.ItemsPanel>
+                          <ItemsControl.ItemTemplate>
+                            <DataTemplate x:DataType="vm:SensorViewModel">
+                              <Border Width="280" Height="150" Margin="0,0,14,14" Padding="14"
+                                      CornerRadius="10"
+                                      Background="{DynamicResource AppBackgroundBrush}">
+                                <DockPanel>
+                                  <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto">
+                                    <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
+                                               TextTrimming="CharacterEllipsis" />
+                                    <TextBlock Grid.Column="1" Text="{Binding Value}" FontWeight="Bold"
+                                               Foreground="{DynamicResource BrandBrush}" />
+                                  </Grid>
+                                  <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,*,*" Margin="0,8,0,0">
+                                    <StackPanel>
+                                      <TextBlock Classes="subtle" Text="{loc:Localize Common_Min}" />
+                                      <TextBlock Text="{Binding Min}" FontSize="12" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="1">
+                                      <TextBlock Classes="subtle" Text="{loc:Localize Common_Max}" />
+                                      <TextBlock Text="{Binding Max}" FontSize="12" />
+                                    </StackPanel>
+                                    <StackPanel Grid.Column="2">
+                                      <TextBlock Classes="subtle" Text="{loc:Localize Common_Avg}" />
+                                      <TextBlock Text="{Binding Average}" FontSize="12" />
+                                    </StackPanel>
+                                  </Grid>
+                                  <ctrl:LiveChart Margin="0,8,0,8"
+                                                  Values="{Binding Values}"
+                                                  IsPercentage="{Binding IsPercentage}"
+                                                  Stroke="{DynamicResource AccentChartBrush}" />
+                                </DockPanel>
+                              </Border>
+                            </DataTemplate>
+                          </ItemsControl.ItemTemplate>
+                        </ItemsControl>
+                      </StackPanel>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
 
                 <!-- Nested devices (e.g. per-core) -->
                 <ItemsControl ItemsSource="{Binding SubItems}">
@@ -91,11 +97,13 @@
                   </ItemsControl.ItemsPanel>
                   <ItemsControl.ItemTemplate>
                     <DataTemplate x:DataType="vm:HardwareItemViewModel">
-                      <Border Width="150" Margin="0,0,10,10" Padding="10" CornerRadius="8"
+                      <Border Width="160" Margin="0,0,10,10" Padding="10" CornerRadius="8"
+                              IsVisible="{Binding HasVisibleSensors}"
                               Background="{DynamicResource AppBackgroundBrush}">
                         <StackPanel Spacing="4">
-                          <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12" />
-                          <ItemsControl ItemsSource="{Binding Sensors}">
+                          <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12"
+                                     TextTrimming="CharacterEllipsis" />
+                          <ItemsControl ItemsSource="{Binding VisibleSensors}">
                             <ItemsControl.ItemTemplate>
                               <DataTemplate x:DataType="vm:SensorViewModel">
                                 <Grid ColumnDefinitions="*,Auto">

@@ -39,6 +39,9 @@ public sealed class SensorViewModel : ObservableObject
     /// <summary>True when this sensor is naturally bounded 0–100 (fixed chart axis).</summary>
     public bool IsPercentage => _sensor.Kind.IsPercentage();
 
+    /// <summary>True once the sensor has produced at least one reading.</summary>
+    public bool HasValue => _sensor.Value is not null;
+
     /// <summary>The current numeric value (0 when never sampled).</summary>
     public float Numeric => _sensor.Value ?? 0f;
 
@@ -61,6 +64,7 @@ public sealed class SensorViewModel : ObservableObject
     public void Refresh()
     {
         OnPropertyChanged(nameof(Numeric));
+        OnPropertyChanged(nameof(HasValue));
         OnPropertyChanged(nameof(Value));
         OnPropertyChanged(nameof(Min));
         OnPropertyChanged(nameof(Max));
@@ -68,7 +72,29 @@ public sealed class SensorViewModel : ObservableObject
         OnPropertyChanged(nameof(Values));
     }
 
-    private string Format(float? value) => value is { } v
-        ? string.Create(CultureInfo.CurrentCulture, $"{v:0.#} {Unit}").TrimEnd()
-        : "—";
+    private string Format(float? value)
+    {
+        if (value is not { } v)
+        {
+            return "—";
+        }
+
+        return Kind == SensorKind.Throughput
+            ? FormatThroughput(v)
+            : string.Create(CultureInfo.CurrentCulture, $"{v:0.#} {Unit}").TrimEnd();
+    }
+
+    private static string FormatThroughput(float bytesPerSecond)
+    {
+        string[] units = ["B/s", "KB/s", "MB/s", "GB/s"];
+        double value = bytesPerSecond;
+        var unit = 0;
+        while (value >= 1024 && unit < units.Length - 1)
+        {
+            value /= 1024;
+            unit++;
+        }
+
+        return string.Create(CultureInfo.CurrentCulture, $"{value:0.#} {units[unit]}");
+    }
 }

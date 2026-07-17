@@ -25,7 +25,7 @@ public sealed class CategoryViewModel : PageViewModel
         [
             .. engine.Hardware
                 .Where(h => h.Kind == kind)
-                .Select(h => new HardwareItemViewModel(h, engine.History)),
+                .Select(h => new HardwareItemViewModel(h, engine.History, localizer)),
         ];
     }
 
