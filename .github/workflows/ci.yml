@@ -1,12 +1,21 @@
 name: CI
 
+# Cost-conscious triggers: validate pull requests and the post-merge state of
+# main only. Feature branches are covered by their PR, so intermediate pushes do
+# not each spawn a run. Use "Run workflow" for ad-hoc runs (incl. Windows).
 on:
   push:
-    branches: [main, "claude/**"]
+    branches: [main]
   pull_request:
     branches: [main]
   workflow_dispatch:
+    inputs:
+      run_windows:
+        description: "Also run the Windows build/test job"
+        type: boolean
+        default: false
 
+# Cancel superseded runs on the same ref so we never pay for stale work.
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: true
@@ -14,11 +23,12 @@ concurrency:
 env:
   DOTNET_CLI_TELEMETRY_OPTOUT: "1"
   DOTNET_NOLOGO: "1"
-  DOTNET_SKIP_FIRST_TIME_EXPERIENCE: "1"
 
 jobs:
-  format:
-    name: Lint & format
+  # One Linux runner does everything (format + build + test) — no extra runner
+  # spin-ups, one restore. This is the gate for every PR.
+  build-test:
+    name: Build & test (Linux)
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -32,16 +42,20 @@ jobs:
         run: dotnet restore ChipGauge.slnx
 
       - name: Verify formatting & style
-        run: dotnet format ChipGauge.slnx --verify-no-changes --severity warn
+        run: dotnet format ChipGauge.slnx --no-restore --verify-no-changes --severity warn
 
-  test:
-    name: Build & test (${{ matrix.os }})
-    needs: format
-    strategy:
-      fail-fast: false
-      matrix:
-        os: [ubuntu-latest, windows-latest]
-    runs-on: ${{ matrix.os }}
+      - name: Build (warnings as errors)
+        run: dotnet build ChipGauge.slnx -c Release --no-restore
+
+      - name: Test
+        run: dotnet test ChipGauge.slnx -c Release --no-build
+
+  # Windows costs 2x Linux minutes and every non-UI, non-provider path is already
+  # covered on Linux — so it runs only on demand (dispatch with run_windows=true).
+  windows:
+    name: Build & test (Windows)
+    if: ${{ github.event_name == 'workflow_dispatch' && inputs.run_windows }}
+    runs-on: windows-latest
     steps:
       - uses: actions/checkout@v4
 
@@ -56,17 +70,5 @@ jobs:
       - name: Build (warnings as errors)
         run: dotnet build ChipGauge.slnx -c Release --no-restore
 
-      - name: Test with coverage
-        run: >
-          dotnet test ChipGauge.slnx -c Release --no-build
-          --logger "trx;LogFileName=test-results.trx"
-          --collect:"XPlat Code Coverage"
-          --results-directory ${{ github.workspace }}/artifacts/test
-
-      - name: Upload test results
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: test-results-${{ matrix.os }}
-          path: ${{ github.workspace }}/artifacts/test
-          if-no-files-found: warn
+      - name: Test
+        run: dotnet test ChipGauge.slnx -c Release --no-build

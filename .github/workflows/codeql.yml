@@ -1,12 +1,12 @@
 name: CodeQL
 
+# CodeQL builds the whole solution, so it is the most expensive workflow. For a
+# pre-release project a weekly scan (plus on-demand runs) is enough security
+# signal without paying for it on every push and pull request.
 on:
-  push:
-    branches: [main]
-  pull_request:
-    branches: [main]
   schedule:
     - cron: "23 5 * * 1" # Mondays, 05:23 UTC
+  workflow_dispatch:
 
 concurrency:
   group: codeql-${{ github.ref }}

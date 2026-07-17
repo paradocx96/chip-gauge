@@ -1,0 +1,64 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChipGauge.App.ViewModels"
+             xmlns:svc="using:ChipGauge.App.Services"
+             xmlns:loc="using:ChipGauge.App.Services.Markup"
+             x:Class="ChipGauge.App.Views.SettingsView"
+             x:DataType="vm:SettingsViewModel">
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Spacing="16" MaxWidth="620" HorizontalAlignment="Left">
+
+      <!-- Appearance -->
+      <Border Classes="card">
+        <StackPanel Spacing="16">
+          <TextBlock Classes="h2" Text="{loc:Localize Settings_Appearance}" />
+
+          <Grid ColumnDefinitions="220,*">
+            <TextBlock Text="{loc:Localize Settings_Theme}" VerticalAlignment="Center" />
+            <ComboBox Grid.Column="1" MinWidth="220"
+                      ItemsSource="{Binding Themes}"
+                      SelectedItem="{Binding SelectedTheme, Mode=TwoWay}" />
+          </Grid>
+
+          <Grid ColumnDefinitions="220,*">
+            <TextBlock Text="{loc:Localize Settings_Language}" VerticalAlignment="Center" />
+            <ComboBox Grid.Column="1" MinWidth="220"
+                      ItemsSource="{Binding Languages}"
+                      SelectedItem="{Binding SelectedLanguage, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="svc:LanguageOption">
+                  <TextBlock Text="{Binding DisplayName}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </Grid>
+        </StackPanel>
+      </Border>
+
+      <!-- Monitoring -->
+      <Border Classes="card">
+        <StackPanel Spacing="16">
+          <TextBlock Classes="h2" Text="{loc:Localize Settings_Monitoring}" />
+
+          <Grid ColumnDefinitions="220,*">
+            <TextBlock Text="{loc:Localize Settings_TemperatureUnit}" VerticalAlignment="Center" />
+            <ComboBox Grid.Column="1" MinWidth="220"
+                      ItemsSource="{Binding TemperatureUnits}"
+                      SelectedItem="{Binding SelectedTemperatureUnit, Mode=TwoWay}" />
+          </Grid>
+
+          <Grid ColumnDefinitions="220,*,60">
+            <TextBlock Text="{loc:Localize Settings_Interval}" VerticalAlignment="Center" />
+            <Slider Grid.Column="1" Minimum="0.5" Maximum="10" TickFrequency="0.5"
+                    IsSnapToTickEnabled="True"
+                    Value="{Binding PollingSeconds, Mode=TwoWay}" />
+            <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Text="{Binding PollingSeconds}" />
+          </Grid>
+        </StackPanel>
+      </Border>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

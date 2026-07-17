@@ -1,0 +1,122 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChipGauge.App.ViewModels"
+             xmlns:ctrl="using:ChipGauge.App.Controls"
+             xmlns:loc="using:ChipGauge.App.Services.Markup"
+             x:Class="ChipGauge.App.Views.CategoryView"
+             x:DataType="vm:CategoryViewModel">
+
+  <Panel>
+    <!-- Empty state -->
+    <TextBlock Classes="subtle" HorizontalAlignment="Center" VerticalAlignment="Center"
+               IsVisible="{Binding !HasData}"
+               Text="{loc:Localize Category_NoData}" />
+
+    <ScrollViewer IsVisible="{Binding HasData}" HorizontalScrollBarVisibility="Disabled">
+      <ItemsControl ItemsSource="{Binding Items}">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate x:DataType="vm:HardwareItemViewModel">
+            <Border Classes="card" Margin="0,0,0,16">
+              <StackPanel Spacing="14">
+
+                <TextBlock Classes="h2" Text="{Binding Name}" />
+
+                <!-- Identification -->
+                <StackPanel Spacing="6" IsVisible="{Binding HasProperties}">
+                  <TextBlock Classes="subtle" Text="{loc:Localize Category_Identification}" />
+                  <ItemsControl ItemsSource="{Binding Properties}">
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:PropertyRow">
+                        <Grid ColumnDefinitions="200,*" Margin="0,2">
+                          <TextBlock Classes="subtle" Text="{Binding Name}" />
+                          <TextBlock Grid.Column="1" Text="{Binding Value}" TextWrapping="Wrap" />
+                        </Grid>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+
+                <!-- Sensors -->
+                <StackPanel Spacing="8" IsVisible="{Binding HasSensors}">
+                  <TextBlock Classes="subtle" Text="{loc:Localize Category_Sensors}" />
+                  <ItemsControl ItemsSource="{Binding Sensors}">
+                    <ItemsControl.ItemsPanel>
+                      <ItemsPanelTemplate>
+                        <WrapPanel Orientation="Horizontal" />
+                      </ItemsPanelTemplate>
+                    </ItemsControl.ItemsPanel>
+                    <ItemsControl.ItemTemplate>
+                      <DataTemplate x:DataType="vm:SensorViewModel">
+                        <Border Width="280" Height="150" Margin="0,0,14,14" Padding="14"
+                                CornerRadius="10"
+                                Background="{DynamicResource AppBackgroundBrush}">
+                          <DockPanel>
+                            <Grid DockPanel.Dock="Top" ColumnDefinitions="*,Auto">
+                              <TextBlock Text="{Binding Name}" FontWeight="SemiBold"
+                                         TextTrimming="CharacterEllipsis" />
+                              <TextBlock Grid.Column="1" Text="{Binding Value}" FontWeight="Bold"
+                                         Foreground="{DynamicResource BrandBrush}" />
+                            </Grid>
+                            <Grid DockPanel.Dock="Bottom" ColumnDefinitions="*,*,*" Margin="0,8,0,0">
+                              <StackPanel>
+                                <TextBlock Classes="subtle" Text="{loc:Localize Common_Min}" />
+                                <TextBlock Text="{Binding Min}" FontSize="12" />
+                              </StackPanel>
+                              <StackPanel Grid.Column="1">
+                                <TextBlock Classes="subtle" Text="{loc:Localize Common_Max}" />
+                                <TextBlock Text="{Binding Max}" FontSize="12" />
+                              </StackPanel>
+                              <StackPanel Grid.Column="2">
+                                <TextBlock Classes="subtle" Text="{loc:Localize Common_Avg}" />
+                                <TextBlock Text="{Binding Average}" FontSize="12" />
+                              </StackPanel>
+                            </Grid>
+                            <ctrl:LiveChart Margin="0,8,0,8"
+                                            Values="{Binding Values}"
+                                            IsPercentage="{Binding IsPercentage}"
+                                            Stroke="{DynamicResource AccentChartBrush}" />
+                          </DockPanel>
+                        </Border>
+                      </DataTemplate>
+                    </ItemsControl.ItemTemplate>
+                  </ItemsControl>
+                </StackPanel>
+
+                <!-- Nested devices (e.g. per-core) -->
+                <ItemsControl ItemsSource="{Binding SubItems}">
+                  <ItemsControl.ItemsPanel>
+                    <ItemsPanelTemplate>
+                      <WrapPanel Orientation="Horizontal" />
+                    </ItemsPanelTemplate>
+                  </ItemsControl.ItemsPanel>
+                  <ItemsControl.ItemTemplate>
+                    <DataTemplate x:DataType="vm:HardwareItemViewModel">
+                      <Border Width="150" Margin="0,0,10,10" Padding="10" CornerRadius="8"
+                              Background="{DynamicResource AppBackgroundBrush}">
+                        <StackPanel Spacing="4">
+                          <TextBlock Text="{Binding Name}" FontWeight="SemiBold" FontSize="12" />
+                          <ItemsControl ItemsSource="{Binding Sensors}">
+                            <ItemsControl.ItemTemplate>
+                              <DataTemplate x:DataType="vm:SensorViewModel">
+                                <Grid ColumnDefinitions="*,Auto">
+                                  <TextBlock Classes="subtle" Text="{Binding Name}"
+                                             TextTrimming="CharacterEllipsis" />
+                                  <TextBlock Grid.Column="1" Text="{Binding Value}" FontSize="12" />
+                                </Grid>
+                              </DataTemplate>
+                            </ItemsControl.ItemTemplate>
+                          </ItemsControl>
+                        </StackPanel>
+                      </Border>
+                    </DataTemplate>
+                  </ItemsControl.ItemTemplate>
+                </ItemsControl>
+
+              </StackPanel>
+            </Border>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+  </Panel>
+</UserControl>

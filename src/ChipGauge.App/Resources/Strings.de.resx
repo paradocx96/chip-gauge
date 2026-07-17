@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<root>
+  <resheader name="resmimetype"><value>text/microsoft-resx</value></resheader>
+  <resheader name="version"><value>2.0</value></resheader>
+  <resheader name="reader"><value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+  <resheader name="writer"><value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value></resheader>
+
+  <data name="App_Tagline" xml:space="preserve"><value>Hardware-Monitor</value></data>
+
+  <data name="Nav_Dashboard" xml:space="preserve"><value>Übersicht</value></data>
+  <data name="Nav_Cpu" xml:space="preserve"><value>CPU</value></data>
+  <data name="Nav_Gpu" xml:space="preserve"><value>GPU</value></data>
+  <data name="Nav_Memory" xml:space="preserve"><value>Arbeitsspeicher</value></data>
+  <data name="Nav_Storage" xml:space="preserve"><value>Speicher</value></data>
+  <data name="Nav_Network" xml:space="preserve"><value>Netzwerk</value></data>
+  <data name="Nav_Mainboard" xml:space="preserve"><value>Mainboard</value></data>
+  <data name="Nav_Sensors" xml:space="preserve"><value>Sensoren</value></data>
+  <data name="Nav_Settings" xml:space="preserve"><value>Einstellungen</value></data>
+
+  <data name="Status_SimulatedData" xml:space="preserve"><value>Simulierte Daten werden angezeigt (Demo-Anbieter)</value></data>
+
+  <data name="Dashboard_System" xml:space="preserve"><value>System</value></data>
+  <data name="Dashboard_Uptime" xml:space="preserve"><value>Betriebszeit</value></data>
+  <data name="Dashboard_Architecture" xml:space="preserve"><value>Architektur</value></data>
+
+  <data name="Common_Min" xml:space="preserve"><value>Min</value></data>
+  <data name="Common_Max" xml:space="preserve"><value>Max</value></data>
+  <data name="Common_Avg" xml:space="preserve"><value>Mittel</value></data>
+  <data name="Common_Current" xml:space="preserve"><value>Aktuell</value></data>
+
+  <data name="Category_Identification" xml:space="preserve"><value>Identifikation</value></data>
+  <data name="Category_Sensors" xml:space="preserve"><value>Sensoren</value></data>
+  <data name="Category_NoData" xml:space="preserve"><value>Keine Geräte in dieser Kategorie erkannt.</value></data>
+
+  <data name="Sensors_Search" xml:space="preserve"><value>Sensoren suchen…</value></data>
+  <data name="Sensors_ColDevice" xml:space="preserve"><value>Gerät</value></data>
+  <data name="Sensors_ColSensor" xml:space="preserve"><value>Sensor</value></data>
+  <data name="Sensors_ColCurrent" xml:space="preserve"><value>Aktuell</value></data>
+  <data name="Sensors_ColMin" xml:space="preserve"><value>Min</value></data>
+  <data name="Sensors_ColMax" xml:space="preserve"><value>Max</value></data>
+  <data name="Sensors_ColAvg" xml:space="preserve"><value>Durchschnitt</value></data>
+
+  <data name="Settings_Appearance" xml:space="preserve"><value>Darstellung</value></data>
+  <data name="Settings_Theme" xml:space="preserve"><value>Design</value></data>
+  <data name="Settings_Language" xml:space="preserve"><value>Sprache</value></data>
+  <data name="Settings_Monitoring" xml:space="preserve"><value>Überwachung</value></data>
+  <data name="Settings_Interval" xml:space="preserve"><value>Abfrageintervall (Sekunden)</value></data>
+  <data name="Settings_TemperatureUnit" xml:space="preserve"><value>Temperatureinheit</value></data>
+
+  <data name="Theme_System" xml:space="preserve"><value>System</value></data>
+  <data name="Theme_Light" xml:space="preserve"><value>Hell</value></data>
+  <data name="Theme_Dark" xml:space="preserve"><value>Dunkel</value></data>
+
+  <data name="Unit_Celsius" xml:space="preserve"><value>Celsius (°C)</value></data>
+  <data name="Unit_Fahrenheit" xml:space="preserve"><value>Fahrenheit (°F)</value></data>
+</root>

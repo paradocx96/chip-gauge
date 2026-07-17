@@ -1,9 +1,11 @@
 <Solution>
   <Folder Name="/src/">
+    <Project Path="src/ChipGauge.App/ChipGauge.App.csproj" />
     <Project Path="src/ChipGauge.Core/ChipGauge.Core.csproj" />
     <Project Path="src/ChipGauge.Hardware.Mock/ChipGauge.Hardware.Mock.csproj" />
   </Folder>
   <Folder Name="/tests/">
+    <Project Path="tests/ChipGauge.App.Tests/ChipGauge.App.Tests.csproj" />
     <Project Path="tests/ChipGauge.Core.Tests/ChipGauge.Core.Tests.csproj" />
   </Folder>
 </Solution>

@@ -1,0 +1,73 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:ChipGauge.App.ViewModels"
+        xmlns:loc="using:ChipGauge.App.Services.Markup"
+        x:Class="ChipGauge.App.Views.MainWindow"
+        x:DataType="vm:MainWindowViewModel"
+        Title="ChipGauge"
+        Width="1200" Height="780" MinWidth="920" MinHeight="620"
+        Background="{DynamicResource AppBackgroundBrush}"
+        Icon="/Assets/app-icon.png">
+
+  <Grid ColumnDefinitions="240,*">
+
+    <!-- Sidebar -->
+    <Border Grid.Column="0" Background="{DynamicResource SidebarBackgroundBrush}"
+            BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="0,0,1,0">
+      <DockPanel>
+        <!-- Brand header -->
+        <StackPanel DockPanel.Dock="Top" Orientation="Horizontal" Margin="18,20,18,12" Spacing="10">
+          <Image Source="/Assets/app-icon.png" Width="30" Height="30" />
+          <TextBlock Text="ChipGauge" FontSize="19" FontWeight="Bold" VerticalAlignment="Center" />
+        </StackPanel>
+
+        <!-- Theme toggle pinned to the bottom -->
+        <Button DockPanel.Dock="Bottom" Margin="16,8,16,16" HorizontalAlignment="Stretch"
+                HorizontalContentAlignment="Left" Command="{Binding CycleThemeCommand}">
+          <StackPanel Orientation="Horizontal" Spacing="10">
+            <PathIcon Data="{StaticResource Icon.settings}" Width="16" Height="16" />
+            <TextBlock Text="{Binding Theme.Theme}" VerticalAlignment="Center" />
+          </StackPanel>
+        </Button>
+
+        <!-- Navigation -->
+        <ListBox Classes="nav" Margin="0,4"
+                 ItemsSource="{Binding Pages}"
+                 SelectedItem="{Binding SelectedPage}">
+          <ListBox.ItemTemplate>
+            <DataTemplate x:DataType="vm:PageViewModel">
+              <StackPanel Orientation="Horizontal" Spacing="12">
+                <PathIcon Data="{Binding IconKey, Converter={StaticResource IconConverter}}"
+                          Width="18" Height="18" />
+                <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="14" />
+              </StackPanel>
+            </DataTemplate>
+          </ListBox.ItemTemplate>
+        </ListBox>
+      </DockPanel>
+    </Border>
+
+    <!-- Content area -->
+    <DockPanel Grid.Column="1">
+      <!-- Header bar -->
+      <Border DockPanel.Dock="Top" Padding="24,18" >
+        <Grid ColumnDefinitions="*,Auto">
+          <TextBlock Classes="h1" VerticalAlignment="Center"
+                     Text="{Binding SelectedPage.Title}" />
+          <Border Grid.Column="1" CornerRadius="12" Padding="10,5"
+                  Background="{DynamicResource CardBackgroundBrush}"
+                  BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
+            <StackPanel Orientation="Horizontal" Spacing="8">
+              <Ellipse Width="8" Height="8" VerticalAlignment="Center" Fill="{DynamicResource MemoryBrush}" />
+              <TextBlock Classes="subtle" VerticalAlignment="Center"
+                         Text="{loc:Localize Status_SimulatedData}" />
+            </StackPanel>
+          </Border>
+        </Grid>
+      </Border>
+
+      <!-- Selected page -->
+      <ContentControl Content="{Binding SelectedPage}" Margin="24,0,24,24" />
+    </DockPanel>
+  </Grid>
+</Window>

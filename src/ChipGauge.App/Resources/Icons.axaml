@@ -1,0 +1,24 @@
+<ResourceDictionary xmlns="https://github.com/avaloniaui"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+  <!-- Blocky 24x24 category glyphs. Frame icons rely on the even-odd default;
+       icons whose strokes overlap use the F1 (non-zero) prefix. -->
+  <StreamGeometry x:Key="Icon.dashboard">M3,3 H10 V10 H3 Z M14,3 H21 V10 H14 Z M3,14 H10 V21 H3 Z M14,14 H21 V21 H14 Z</StreamGeometry>
+
+  <StreamGeometry x:Key="Icon.cpu">M9,1 H11 V4 H9 Z M13,1 H15 V4 H13 Z M9,20 H11 V23 H9 Z M13,20 H15 V23 H13 Z M1,9 H4 V11 H1 Z M1,13 H4 V15 H1 Z M20,9 H23 V11 H20 Z M20,13 H23 V15 H20 Z M5,5 H19 V19 H5 Z M8,8 H16 V16 H8 Z</StreamGeometry>
+
+  <StreamGeometry x:Key="Icon.gpu">M2,6 H22 V18 H2 Z M4,9 H11 V10 H4 Z M4,12 H9 V13 H4 Z M16,8 A4,4 0 1,0 16,16 A4,4 0 1,0 16,8 Z</StreamGeometry>
+
+  <StreamGeometry x:Key="Icon.memory">M2,7 H22 V16 H2 Z M4,16 H6 V19 H4 Z M8,16 H10 V19 H8 Z M12,16 H14 V19 H12 Z M16,16 H18 V19 H16 Z M5,9 H9 V13 H5 Z M11,9 H15 V13 H11 Z M17,9 H21 V13 H17 Z</StreamGeometry>
+
+  <StreamGeometry x:Key="Icon.storage">M3,5 H21 V19 H3 Z M6,8 H18 V10 H6 Z M6,12 H14 V14 H6 Z M16,15 H18 V17 H16 Z</StreamGeometry>
+
+  <StreamGeometry x:Key="Icon.network">F1 M9,2 H15 V7 H9 Z M2,17 H7 V22 H2 Z M17,17 H22 V22 H17 Z M11,7 H13 V11 H11 Z M4,11 H20 V13 H4 Z M4,11 H6 V18 H4 Z M18,11 H20 V18 H18 Z</StreamGeometry>
+
+  <StreamGeometry x:Key="Icon.mainboard">M3,3 H21 V21 H3 Z M6,6 H10 V11 H6 Z M13,6 H18 V8 H13 Z M13,10 H18 V12 H13 Z M6,14 H9 V18 H6 Z M11,15 H18 V17 H11 Z</StreamGeometry>
+
+  <StreamGeometry x:Key="Icon.sensors">F1 M3,3 H5 V21 H3 Z M3,19 H21 V21 H3 Z M8,13 H10 V17 H8 Z M12,9 H14 V17 H12 Z M16,5 H18 V17 H16 Z</StreamGeometry>
+
+  <StreamGeometry x:Key="Icon.settings">F1 M3,5 H21 V7 H3 Z M7,3 H10 V9 H7 Z M3,11 H21 V13 H3 Z M13,9 H16 V15 H13 Z M3,17 H21 V19 H3 Z M8,15 H11 V21 H8 Z</StreamGeometry>
+
+</ResourceDictionary>
