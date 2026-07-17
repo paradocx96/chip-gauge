@@ -22,6 +22,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\ChipGauge.App\ChipGauge.App.csproj" />
+    <ProjectReference Include="..\..\src\ChipGauge.Hardware.Windows\ChipGauge.Hardware.Windows.csproj" />
   </ItemGroup>
 
 </Project>

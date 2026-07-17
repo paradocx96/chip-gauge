@@ -22,16 +22,19 @@ public sealed partial class MainWindowViewModel : ObservableObject
         ThemeService theme,
         AppSettings settings,
         MonitoringEngine engine,
-        IHardwareInfoProvider info)
+        IHardwareInfoProvider info,
+        ISensorProvider provider)
     {
         ArgumentNullException.ThrowIfNull(localizer);
         ArgumentNullException.ThrowIfNull(theme);
         ArgumentNullException.ThrowIfNull(settings);
         ArgumentNullException.ThrowIfNull(engine);
         ArgumentNullException.ThrowIfNull(info);
+        ArgumentNullException.ThrowIfNull(provider);
 
         Localizer = localizer;
         Theme = theme;
+        IsSimulated = provider.IsSimulated;
 
         Pages =
         [
@@ -60,6 +63,9 @@ public sealed partial class MainWindowViewModel : ObservableObject
 
     /// <summary>Product name shown in the sidebar header.</summary>
     public string AppName => "ChipGauge";
+
+    /// <summary>True when the data is simulated (drives the "demo data" badge).</summary>
+    public bool IsSimulated { get; }
 
     /// <summary>Forwards a tick to the visible page.</summary>
     public void OnTick() => SelectedPage.OnTick();

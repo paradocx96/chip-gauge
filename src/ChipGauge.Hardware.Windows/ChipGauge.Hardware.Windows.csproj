@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <RootNamespace>ChipGauge.Hardware.Windows</RootNamespace>
+    <AssemblyName>ChipGauge.Hardware.Windows</AssemblyName>
+    <Description>Live Windows sensor provider backed by LibreHardwareMonitor. Compiles cross-platform (managed API only); functions at runtime on Windows.</Description>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="LibreHardwareMonitorLib" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\ChipGauge.Core\ChipGauge.Core.csproj" />
+  </ItemGroup>
+
+</Project>

@@ -55,6 +55,7 @@
           <TextBlock Classes="h1" VerticalAlignment="Center"
                      Text="{Binding SelectedPage.Title}" />
           <Border Grid.Column="1" CornerRadius="12" Padding="10,5"
+                  IsVisible="{Binding IsSimulated}"
                   Background="{DynamicResource CardBackgroundBrush}"
                   BorderBrush="{DynamicResource CardBorderBrush}" BorderThickness="1">
             <StackPanel Orientation="Horizontal" Spacing="8">

@@ -3,15 +3,13 @@ using ChipGauge.App.ViewModels;
 using ChipGauge.Core.Abstractions;
 using ChipGauge.Core.Monitoring;
 using ChipGauge.Core.Reporting;
-using ChipGauge.Hardware.Mock;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace ChipGauge.App.Composition;
 
 /// <summary>
-/// The application's composition root. Phase 1 binds the UI to the deterministic
-/// <see cref="MockSensorProvider"/>; swapping in the Windows provider is a
-/// one-line change here once it lands.
+/// The application's composition root. The hardware provider is chosen at runtime
+/// by <see cref="HardwareProviderFactory"/> — live on Windows, simulated elsewhere.
 /// </summary>
 public static class ServiceRegistration
 {
@@ -28,10 +26,10 @@ public static class ServiceRegistration
     {
         ArgumentNullException.ThrowIfNull(services);
 
-        // Hardware source (simulated for Phase 1). One instance implements both seams.
-        services.AddSingleton<MockSensorProvider>();
-        services.AddSingleton<ISensorProvider>(sp => sp.GetRequiredService<MockSensorProvider>());
-        services.AddSingleton<IHardwareInfoProvider>(sp => sp.GetRequiredService<MockSensorProvider>());
+        // Hardware source: live on Windows, simulated elsewhere. One instance
+        // implements both seams.
+        services.AddSingleton<ISensorProvider>(_ => HardwareProviderFactory.Create());
+        services.AddSingleton<IHardwareInfoProvider>(sp => (IHardwareInfoProvider)sp.GetRequiredService<ISensorProvider>());
 
         // Core engine + services.
         services.AddSingleton(sp => new MonitoringEngine(

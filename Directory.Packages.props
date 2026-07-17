@@ -19,6 +19,10 @@
     <PackageVersion Include="Microsoft.Extensions.DependencyInjection" Version="10.0.10" />
   </ItemGroup>
 
+  <ItemGroup Label="Hardware (Windows)">
+    <PackageVersion Include="LibreHardwareMonitorLib" Version="0.9.6" />
+  </ItemGroup>
+
   <ItemGroup Label="Testing">
     <PackageVersion Include="Microsoft.NET.Test.Sdk" Version="17.14.1" />
     <PackageVersion Include="xunit.v3" Version="3.2.2" />
