@@ -47,6 +47,10 @@
   <data name="Settings_Monitoring" xml:space="preserve"><value>Überwachung</value></data>
   <data name="Settings_Interval" xml:space="preserve"><value>Abfrageintervall (Sekunden)</value></data>
   <data name="Settings_TemperatureUnit" xml:space="preserve"><value>Temperatureinheit</value></data>
+  <data name="Settings_Snapshot" xml:space="preserve"><value>Systembericht</value></data>
+  <data name="Settings_ExportSnapshot" xml:space="preserve"><value>Systembericht exportieren…</value></data>
+  <data name="Settings_ExportHint" xml:space="preserve"><value>Speichert einen Textbericht aller erkannten Hardware und Sensoren.</value></data>
+  <data name="Settings_Saved" xml:space="preserve"><value>Gespeichert unter:</value></data>
 
   <data name="Theme_System" xml:space="preserve"><value>System</value></data>
   <data name="Theme_Light" xml:space="preserve"><value>Hell</value></data>

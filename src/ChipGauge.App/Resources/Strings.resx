@@ -93,6 +93,10 @@
   <data name="Settings_Monitoring" xml:space="preserve"><value>Monitoring</value></data>
   <data name="Settings_Interval" xml:space="preserve"><value>Polling interval (seconds)</value></data>
   <data name="Settings_TemperatureUnit" xml:space="preserve"><value>Temperature unit</value></data>
+  <data name="Settings_Snapshot" xml:space="preserve"><value>Snapshot</value></data>
+  <data name="Settings_ExportSnapshot" xml:space="preserve"><value>Export system snapshot…</value></data>
+  <data name="Settings_ExportHint" xml:space="preserve"><value>Save a text report of all detected hardware and sensors.</value></data>
+  <data name="Settings_Saved" xml:space="preserve"><value>Saved to:</value></data>
 
   <data name="Theme_System" xml:space="preserve"><value>System</value></data>
   <data name="Theme_Light" xml:space="preserve"><value>Light</value></data>

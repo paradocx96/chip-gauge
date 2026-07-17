@@ -59,6 +59,20 @@
         </StackPanel>
       </Border>
 
+      <!-- Snapshot -->
+      <Border Classes="card">
+        <StackPanel Spacing="12">
+          <TextBlock Classes="h2" Text="{loc:Localize Settings_Snapshot}" />
+          <TextBlock Classes="subtle" Text="{loc:Localize Settings_ExportHint}" TextWrapping="Wrap" />
+          <Button Name="ExportButton" Click="OnExportSnapshotClick"
+                  Content="{loc:Localize Settings_ExportSnapshot}" HorizontalAlignment="Left" />
+          <StackPanel Orientation="Horizontal" Spacing="6" IsVisible="{Binding HasExported}">
+            <TextBlock Classes="subtle" Text="{loc:Localize Settings_Saved}" />
+            <TextBlock Text="{Binding LastExportPath}" TextTrimming="CharacterEllipsis" />
+          </StackPanel>
+        </StackPanel>
+      </Border>
+
     </StackPanel>
   </ScrollViewer>
 </UserControl>

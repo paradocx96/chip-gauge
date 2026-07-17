@@ -1,4 +1,5 @@
 using System.Globalization;
+using ChipGauge.App.Services;
 using ChipGauge.Core.Models;
 using ChipGauge.Core.Monitoring;
 using CommunityToolkit.Mvvm.ComponentModel;
@@ -79,9 +80,17 @@ public sealed class SensorViewModel : ObservableObject
             return "—";
         }
 
-        return Kind == SensorKind.Throughput
-            ? FormatThroughput(v)
-            : string.Create(CultureInfo.CurrentCulture, $"{v:0.#} {Unit}").TrimEnd();
+        if (Kind == SensorKind.Throughput)
+        {
+            return FormatThroughput(v);
+        }
+
+        if (Kind == SensorKind.Temperature && DisplaySettings.TemperatureUnit == TemperatureUnit.Fahrenheit)
+        {
+            return string.Create(CultureInfo.CurrentCulture, $"{(v * 9f / 5f) + 32f:0.#} °F");
+        }
+
+        return string.Create(CultureInfo.CurrentCulture, $"{v:0.#} {Unit}").TrimEnd();
     }
 
     private static string FormatThroughput(float bytesPerSecond)
