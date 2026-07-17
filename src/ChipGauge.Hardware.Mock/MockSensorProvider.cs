@@ -171,8 +171,9 @@ public sealed class MockSensorProvider : ISensorProvider, IHardwareInfoProvider
             .SetProperty("Form Factor", "M.2 2280");
         AddSensor(ssd, "disk0/temp", "Drive Temperature", SensorKind.Temperature, 44f, 8f, 55f, 2f, 25f, 80f);
         AddSensor(ssd, "disk0/activity", "Activity", SensorKind.Load, 18f, 30f, 25f, 15f, 0f, 100f);
-        AddSensor(ssd, "disk0/read", "Read Rate", SensorKind.Throughput, 380f, 620f, 22f, 120f, 0f, 7000f, "MB/s");
-        AddSensor(ssd, "disk0/write", "Write Rate", SensorKind.Throughput, 260f, 420f, 18f, 100f, 0f, 6900f, "MB/s");
+        // Throughput values are in bytes/second, matching LibreHardwareMonitor.
+        AddSensor(ssd, "disk0/read", "Read Rate", SensorKind.Throughput, 3.8e8f, 6.2e8f, 22f, 1.2e8f, 0f, 7e9f);
+        AddSensor(ssd, "disk0/write", "Write Rate", SensorKind.Throughput, 2.6e8f, 4.2e8f, 18f, 1.0e8f, 0f, 6.9e9f);
         _hardware.Add(ssd);
 
         var hdd = new HardwareItem("disk1", "Seagate BarraCuda 4TB", HardwareKind.Storage)
@@ -182,8 +183,8 @@ public sealed class MockSensorProvider : ISensorProvider, IHardwareInfoProvider
             .SetProperty("RPM", "5400");
         AddSensor(hdd, "disk1/temp", "Drive Temperature", SensorKind.Temperature, 38f, 6f, 65f, 1.5f, 22f, 65f);
         AddSensor(hdd, "disk1/activity", "Activity", SensorKind.Load, 8f, 16f, 30f, 10f, 0f, 100f);
-        AddSensor(hdd, "disk1/read", "Read Rate", SensorKind.Throughput, 90f, 110f, 26f, 30f, 0f, 260f, "MB/s");
-        AddSensor(hdd, "disk1/write", "Write Rate", SensorKind.Throughput, 70f, 90f, 24f, 25f, 0f, 250f, "MB/s");
+        AddSensor(hdd, "disk1/read", "Read Rate", SensorKind.Throughput, 9.0e7f, 1.1e8f, 26f, 3.0e7f, 0f, 2.6e8f);
+        AddSensor(hdd, "disk1/write", "Write Rate", SensorKind.Throughput, 7.0e7f, 9.0e7f, 24f, 2.5e7f, 0f, 2.5e8f);
         _hardware.Add(hdd);
 
         BuildSmartDrives();
@@ -196,8 +197,8 @@ public sealed class MockSensorProvider : ISensorProvider, IHardwareInfoProvider
             .SetProperty("MAC Address", "A8:A1:59:3C:7D:20")
             .SetProperty("IPv4", "192.168.1.42")
             .SetProperty("Driver", "1.1.4.38");
-        AddSensor(nic, "net0/down", "Download", SensorKind.Throughput, 12f, 22f, 18f, 8f, 0f, 300f, "MB/s");
-        AddSensor(nic, "net0/up", "Upload", SensorKind.Throughput, 4f, 8f, 22f, 3f, 0f, 300f, "MB/s");
+        AddSensor(nic, "net0/down", "Download", SensorKind.Throughput, 1.2e7f, 2.2e7f, 18f, 8.0e6f, 0f, 3.0e8f);
+        AddSensor(nic, "net0/up", "Upload", SensorKind.Throughput, 4.0e6f, 8.0e6f, 22f, 3.0e6f, 0f, 3.0e8f);
         _hardware.Add(nic);
     }
 
