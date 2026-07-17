@@ -21,14 +21,15 @@ public sealed class ViewModelTests
     }
 
     [Fact]
-    public async Task Shell_ExposesAllNineNavigationPages()
+    public async Task Shell_ExposesAllNavigationPages()
     {
         await using ServiceProvider provider = BuildWarmedProvider();
         var main = provider.GetRequiredService<MainWindowViewModel>();
 
-        Assert.Equal(9, main.Pages.Count);
+        Assert.Equal(10, main.Pages.Count);
         Assert.IsType<DashboardViewModel>(main.SelectedPage);
         Assert.Contains(main.Pages, p => p is SensorsViewModel);
+        Assert.Contains(main.Pages, p => p is AlertsViewModel);
         Assert.Contains(main.Pages, p => p is SettingsViewModel);
     }
 

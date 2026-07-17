@@ -15,6 +15,7 @@
   <data name="Nav_Network" xml:space="preserve"><value>Netzwerk</value></data>
   <data name="Nav_Mainboard" xml:space="preserve"><value>Mainboard</value></data>
   <data name="Nav_Sensors" xml:space="preserve"><value>Sensoren</value></data>
+  <data name="Nav_Alerts" xml:space="preserve"><value>Warnungen</value></data>
   <data name="Nav_Settings" xml:space="preserve"><value>Einstellungen</value></data>
 
   <data name="Status_SimulatedData" xml:space="preserve"><value>Simulierte Daten werden angezeigt (Demo-Anbieter)</value></data>
@@ -42,6 +43,19 @@
   <data name="Sensors_ColMin" xml:space="preserve"><value>Min</value></data>
   <data name="Sensors_ColMax" xml:space="preserve"><value>Max</value></data>
   <data name="Sensors_ColAvg" xml:space="preserve"><value>Durchschnitt</value></data>
+
+  <data name="Alerts_NewRule" xml:space="preserve"><value>Neue Warnregel</value></data>
+  <data name="Alerts_Sensor" xml:space="preserve"><value>Sensor</value></data>
+  <data name="Alerts_Above" xml:space="preserve"><value>Über</value></data>
+  <data name="Alerts_Below" xml:space="preserve"><value>Unter</value></data>
+  <data name="Alerts_Threshold" xml:space="preserve"><value>Schwellenwert</value></data>
+  <data name="Alerts_Duration" xml:space="preserve"><value>Für (Sekunden)</value></data>
+  <data name="Alerts_Message" xml:space="preserve"><value>Nachricht (optional)</value></data>
+  <data name="Alerts_Add" xml:space="preserve"><value>Regel hinzufügen</value></data>
+  <data name="Alerts_Rules" xml:space="preserve"><value>Regeln</value></data>
+  <data name="Alerts_NoRules" xml:space="preserve"><value>Noch keine Warnregeln. Fügen Sie oben eine hinzu, um benachrichtigt zu werden, wenn ein Sensor einen Schwellenwert überschreitet.</value></data>
+  <data name="Alerts_Firing" xml:space="preserve"><value>Aktiv</value></data>
+  <data name="Alerts_Remove" xml:space="preserve"><value>Entfernen</value></data>
 
   <data name="Settings_Appearance" xml:space="preserve"><value>Darstellung</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Design</value></data>

@@ -21,7 +21,8 @@ public sealed class ElevationNoticeTests
         await using var engine = new MonitoringEngine(provider);
         var main = new MainWindowViewModel(
             new Localizer(), new ThemeService(), new AppSettings(), new SettingsService(),
-            engine, provider, provider, new Core.Reporting.SnapshotService());
+            engine, provider, provider, new Core.Reporting.SnapshotService(),
+            new AlertRulesStore(Path.Combine(Path.GetTempPath(), Guid.NewGuid().ToString("N"))));
 
         Assert.Equal(expectElevation, main.ShowElevationNotice);
         Assert.Equal(expectDriver, main.ShowDriverNotice);

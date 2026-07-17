@@ -36,11 +36,18 @@
                  SelectedItem="{Binding SelectedPage}">
           <ListBox.ItemTemplate>
             <DataTemplate x:DataType="vm:PageViewModel">
-              <StackPanel Orientation="Horizontal" Spacing="12">
-                <PathIcon Data="{Binding IconKey, Converter={StaticResource IconConverter}}"
+              <Grid ColumnDefinitions="Auto,*,Auto">
+                <PathIcon Grid.Column="0" Data="{Binding IconKey, Converter={StaticResource IconConverter}}"
                           Width="18" Height="18" />
-                <TextBlock Text="{Binding Title}" VerticalAlignment="Center" FontSize="14" />
-              </StackPanel>
+                <TextBlock Grid.Column="1" Text="{Binding Title}" Margin="12,0,0,0"
+                           VerticalAlignment="Center" FontSize="14" />
+                <Border Grid.Column="2" IsVisible="{Binding HasBadge}"
+                        Background="{DynamicResource HealthBadBrush}" CornerRadius="9"
+                        MinWidth="18" Height="18" Padding="5,0" VerticalAlignment="Center">
+                  <TextBlock Text="{Binding BadgeCount}" FontSize="11" FontWeight="Bold"
+                             Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" />
+                </Border>
+              </Grid>
             </DataTemplate>
           </ListBox.ItemTemplate>
         </ListBox>

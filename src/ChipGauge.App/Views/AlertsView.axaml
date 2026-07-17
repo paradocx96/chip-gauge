@@ -1,0 +1,122 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:vm="using:ChipGauge.App.ViewModels"
+             xmlns:loc="using:ChipGauge.App.Services.Markup"
+             x:Class="ChipGauge.App.Views.AlertsView"
+             x:Name="Root"
+             x:DataType="vm:AlertsViewModel">
+
+  <ScrollViewer HorizontalScrollBarVisibility="Disabled">
+    <StackPanel Spacing="16" MaxWidth="720" HorizontalAlignment="Left">
+
+      <!-- New rule editor -->
+      <Border Classes="card">
+        <StackPanel Spacing="14">
+          <TextBlock Classes="h2" Text="{loc:Localize Alerts_NewRule}" />
+
+          <Grid ColumnDefinitions="150,*">
+            <TextBlock Text="{loc:Localize Alerts_Sensor}" VerticalAlignment="Center" />
+            <ComboBox Grid.Column="1" HorizontalAlignment="Stretch"
+                      ItemsSource="{Binding Sensors}"
+                      SelectedItem="{Binding SelectedSensor, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:AlertSensorOption">
+                  <TextBlock Text="{Binding DisplayName}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+          </Grid>
+
+          <Grid ColumnDefinitions="150,Auto,Auto,Auto">
+            <TextBlock Text="{loc:Localize Alerts_Threshold}" VerticalAlignment="Center" />
+            <ComboBox Grid.Column="1" MinWidth="120"
+                      ItemsSource="{Binding Comparisons}"
+                      SelectedItem="{Binding SelectedComparison, Mode=TwoWay}">
+              <ComboBox.ItemTemplate>
+                <DataTemplate x:DataType="vm:ComparisonOption">
+                  <TextBlock Text="{Binding Label}" />
+                </DataTemplate>
+              </ComboBox.ItemTemplate>
+            </ComboBox>
+            <TextBox Grid.Column="2" Width="100" Margin="10,0,8,0"
+                     PlaceholderText="0"
+                     Text="{Binding ThresholdText, Mode=TwoWay}" />
+            <TextBlock Grid.Column="3" VerticalAlignment="Center" Classes="subtle"
+                       Text="{Binding SelectedSensorUnit}" />
+          </Grid>
+
+          <Grid ColumnDefinitions="150,*,60">
+            <TextBlock Text="{loc:Localize Alerts_Duration}" VerticalAlignment="Center" />
+            <Slider Grid.Column="1" Minimum="0" Maximum="60" TickFrequency="1"
+                    IsSnapToTickEnabled="True"
+                    Value="{Binding DurationSeconds, Mode=TwoWay}" />
+            <TextBlock Grid.Column="2" VerticalAlignment="Center" HorizontalAlignment="Right"
+                       Text="{Binding DurationSeconds}" />
+          </Grid>
+
+          <Grid ColumnDefinitions="150,*">
+            <TextBlock Text="{loc:Localize Alerts_Message}" VerticalAlignment="Center" />
+            <TextBox Grid.Column="1" Text="{Binding Message, Mode=TwoWay}" />
+          </Grid>
+
+          <Button HorizontalAlignment="Left" Classes="accent"
+                  Command="{Binding AddRuleCommand}"
+                  Content="{loc:Localize Alerts_Add}" />
+        </StackPanel>
+      </Border>
+
+      <!-- Configured rules -->
+      <Border Classes="card">
+        <StackPanel Spacing="12">
+          <TextBlock Classes="h2" Text="{loc:Localize Alerts_Rules}" />
+
+          <TextBlock Classes="subtle" TextWrapping="Wrap"
+                     IsVisible="{Binding !HasRules}"
+                     Text="{loc:Localize Alerts_NoRules}" />
+
+          <ItemsControl ItemsSource="{Binding Rules}" IsVisible="{Binding HasRules}">
+            <ItemsControl.ItemTemplate>
+              <DataTemplate x:DataType="vm:AlertRuleViewModel">
+                <Border Margin="0,0,0,10" Padding="14" CornerRadius="10"
+                        Background="{DynamicResource AppBackgroundBrush}">
+                  <Grid ColumnDefinitions="Auto,*,Auto,Auto" VerticalAlignment="Center">
+                    <!-- Firing indicator -->
+                    <Ellipse Grid.Column="0" Width="10" Height="10" Margin="0,0,12,0"
+                             VerticalAlignment="Center"
+                             Fill="{DynamicResource HealthBadBrush}"
+                             IsVisible="{Binding IsFiring}" />
+                    <Ellipse Grid.Column="0" Width="10" Height="10" Margin="0,0,12,0"
+                             VerticalAlignment="Center"
+                             Fill="{DynamicResource HealthGoodBrush}"
+                             IsVisible="{Binding !IsFiring}" />
+
+                    <StackPanel Grid.Column="1" Spacing="2">
+                      <TextBlock Text="{Binding SensorName}" FontWeight="SemiBold" />
+                      <StackPanel Orientation="Horizontal" Spacing="8">
+                        <TextBlock Classes="subtle" Text="{Binding Condition}" />
+                        <TextBlock Classes="subtle" FontWeight="Bold"
+                                   Foreground="{DynamicResource HealthBadBrush}"
+                                   IsVisible="{Binding IsFiring}"
+                                   Text="{loc:Localize Alerts_Firing}" />
+                      </StackPanel>
+                    </StackPanel>
+
+                    <TextBlock Grid.Column="2" VerticalAlignment="Center" Margin="12,0,16,0"
+                               FontWeight="Bold" Foreground="{DynamicResource BrandBrush}"
+                               Text="{Binding CurrentValue}" />
+
+                    <Button Grid.Column="3" VerticalAlignment="Center"
+                            Content="{loc:Localize Alerts_Remove}"
+                            Command="{Binding #Root.((vm:AlertsViewModel)DataContext).RemoveRuleCommand}"
+                            CommandParameter="{Binding}" />
+                  </Grid>
+                </Border>
+              </DataTemplate>
+            </ItemsControl.ItemTemplate>
+          </ItemsControl>
+        </StackPanel>
+      </Border>
+
+    </StackPanel>
+  </ScrollViewer>
+</UserControl>

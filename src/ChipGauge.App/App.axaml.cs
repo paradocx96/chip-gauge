@@ -40,16 +40,19 @@ public partial class App : Application
 
         provider.GetRequiredService<MonitoringEngine>().Interval = TimeSpan.FromSeconds(settings.PollingSeconds);
 
-        // From here on, changes are written back to disk.
+        // From here on, changes are written back to disk. Enable alert-rule persistence
+        // before the main view-model loads rules, so subsequent edits are saved.
         settingsService.PersistenceEnabled = true;
+        provider.GetRequiredService<AlertRulesStore>().PersistenceEnabled = true;
 
         if (ApplicationLifetime is IClassicDesktopStyleApplicationLifetime desktop)
         {
             var engine = provider.GetRequiredService<MonitoringEngine>();
             var main = provider.GetRequiredService<MainWindowViewModel>();
 
-            // Marshal each background sample onto the UI thread as a single tick.
-            engine.Sampled += (_, _) => Dispatcher.UIThread.Post(main.OnTick);
+            // Marshal each background sample onto the UI thread: evaluate alerts and
+            // refresh the visible page.
+            engine.Sampled += (_, sample) => Dispatcher.UIThread.Post(() => main.OnSample(sample));
             engine.Start();
 
             desktop.MainWindow = new MainWindow { DataContext = main };

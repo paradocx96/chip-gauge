@@ -37,6 +37,17 @@
     <Setter Property="FontSize" Value="12" />
   </Style>
 
+  <!-- Accent (primary) button -->
+  <Style Selector="Button.accent /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource BrandBrush}" />
+    <Setter Property="Foreground" Value="White" />
+    <Setter Property="CornerRadius" Value="8" />
+  </Style>
+  <Style Selector="Button.accent:pointerover /template/ ContentPresenter">
+    <Setter Property="Background" Value="{DynamicResource AccentChartBrush}" />
+    <Setter Property="Foreground" Value="White" />
+  </Style>
+
   <!-- Sidebar navigation items -->
   <Style Selector="ListBox.nav">
     <Setter Property="Background" Value="Transparent" />

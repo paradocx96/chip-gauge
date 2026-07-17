@@ -42,6 +42,7 @@ public static class ServiceRegistration
         services.AddSingleton<ThemeService>();
         services.AddSingleton<AppSettings>();
         services.AddSingleton<SettingsService>();
+        services.AddSingleton<AlertRulesStore>();
 
         // View-models.
         services.AddSingleton<MainWindowViewModel>();

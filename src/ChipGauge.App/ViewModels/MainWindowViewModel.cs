@@ -15,6 +15,8 @@ namespace ChipGauge.App.ViewModels;
 /// </summary>
 public sealed partial class MainWindowViewModel : ObservableObject
 {
+    private readonly AlertsViewModel _alerts;
+
     [ObservableProperty]
     private PageViewModel _selectedPage;
 
@@ -26,7 +28,8 @@ public sealed partial class MainWindowViewModel : ObservableObject
         MonitoringEngine engine,
         IHardwareInfoProvider info,
         ISensorProvider provider,
-        SnapshotService snapshots)
+        SnapshotService snapshots,
+        AlertRulesStore alertRules)
     {
         ArgumentNullException.ThrowIfNull(localizer);
         ArgumentNullException.ThrowIfNull(theme);
@@ -36,12 +39,15 @@ public sealed partial class MainWindowViewModel : ObservableObject
         ArgumentNullException.ThrowIfNull(info);
         ArgumentNullException.ThrowIfNull(provider);
         ArgumentNullException.ThrowIfNull(snapshots);
+        ArgumentNullException.ThrowIfNull(alertRules);
 
         Localizer = localizer;
         Theme = theme;
         IsSimulated = provider.IsSimulated;
         ShowElevationNotice = provider.RequiresElevation && !provider.IsElevated;
         ShowDriverNotice = provider.RequiresElevation && provider.IsElevated && !provider.HasLowLevelSensors;
+
+        _alerts = new AlertsViewModel(localizer, engine, alertRules);
 
         Pages =
         [
@@ -53,6 +59,7 @@ public sealed partial class MainWindowViewModel : ObservableObject
             new CategoryViewModel(localizer, "Nav_Network", "network", HardwareKind.Network, engine),
             new CategoryViewModel(localizer, "Nav_Mainboard", "mainboard", HardwareKind.Motherboard, engine),
             new SensorsViewModel(localizer, engine),
+            _alerts,
             new SettingsViewModel(localizer, theme, settings, engine, settingsService, snapshots, info),
         ];
 
@@ -82,6 +89,16 @@ public sealed partial class MainWindowViewModel : ObservableObject
 
     /// <summary>Forwards a tick to the visible page.</summary>
     public void OnTick() => SelectedPage.OnTick();
+
+    /// <summary>
+    /// Handles one monitoring sample: evaluates alert rules (regardless of which page
+    /// is visible, so the nav badge stays live) then refreshes the visible page.
+    /// </summary>
+    public void OnSample(MonitoringSample sample)
+    {
+        _alerts.Evaluate(sample);
+        OnTick();
+    }
 
     /// <summary>Cycles System → Light → Dark for the quick top-bar toggle.</summary>
     [RelayCommand]

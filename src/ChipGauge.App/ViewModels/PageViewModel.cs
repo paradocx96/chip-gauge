@@ -31,6 +31,27 @@ public abstract class PageViewModel : ObservableObject
     /// <summary>The localized page title (updates live on language change).</summary>
     public string Title => Localizer[TitleKey];
 
+    private int _badgeCount;
+
+    /// <summary>
+    /// A count shown as a badge on the navigation item (e.g. active alerts). Zero on
+    /// most pages; pages that use it raise change notifications as it moves.
+    /// </summary>
+    public int BadgeCount
+    {
+        get => _badgeCount;
+        protected set
+        {
+            if (SetProperty(ref _badgeCount, value))
+            {
+                OnPropertyChanged(nameof(HasBadge));
+            }
+        }
+    }
+
+    /// <summary>True when <see cref="BadgeCount"/> is greater than zero.</summary>
+    public bool HasBadge => BadgeCount > 0;
+
     /// <summary>Refreshes live values; called each second while this page is visible.</summary>
     public abstract void OnTick();
 

@@ -61,6 +61,7 @@
   <data name="Nav_Network" xml:space="preserve"><value>Network</value></data>
   <data name="Nav_Mainboard" xml:space="preserve"><value>Mainboard</value></data>
   <data name="Nav_Sensors" xml:space="preserve"><value>Sensors</value></data>
+  <data name="Nav_Alerts" xml:space="preserve"><value>Alerts</value></data>
   <data name="Nav_Settings" xml:space="preserve"><value>Settings</value></data>
 
   <data name="Status_SimulatedData" xml:space="preserve"><value>Showing simulated data (demo provider)</value></data>
@@ -88,6 +89,19 @@
   <data name="Sensors_ColMin" xml:space="preserve"><value>Min</value></data>
   <data name="Sensors_ColMax" xml:space="preserve"><value>Max</value></data>
   <data name="Sensors_ColAvg" xml:space="preserve"><value>Average</value></data>
+
+  <data name="Alerts_NewRule" xml:space="preserve"><value>New alert rule</value></data>
+  <data name="Alerts_Sensor" xml:space="preserve"><value>Sensor</value></data>
+  <data name="Alerts_Above" xml:space="preserve"><value>Above</value></data>
+  <data name="Alerts_Below" xml:space="preserve"><value>Below</value></data>
+  <data name="Alerts_Threshold" xml:space="preserve"><value>Threshold</value></data>
+  <data name="Alerts_Duration" xml:space="preserve"><value>For (seconds)</value></data>
+  <data name="Alerts_Message" xml:space="preserve"><value>Message (optional)</value></data>
+  <data name="Alerts_Add" xml:space="preserve"><value>Add rule</value></data>
+  <data name="Alerts_Rules" xml:space="preserve"><value>Rules</value></data>
+  <data name="Alerts_NoRules" xml:space="preserve"><value>No alert rules yet. Add one above to be warned when a sensor crosses a threshold.</value></data>
+  <data name="Alerts_Firing" xml:space="preserve"><value>Firing</value></data>
+  <data name="Alerts_Remove" xml:space="preserve"><value>Remove</value></data>
 
   <data name="Settings_Appearance" xml:space="preserve"><value>Appearance</value></data>
   <data name="Settings_Theme" xml:space="preserve"><value>Theme</value></data>
