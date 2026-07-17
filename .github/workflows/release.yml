@@ -1,0 +1,114 @@
+name: Release
+
+# Two ways to cut a release:
+#   1. Run this workflow (Actions -> Release -> Run workflow) with a version like
+#      1.0.0 — it tags v1.0.0 for you and publishes the release. ("auto tag")
+#   2. Push a tag yourself:  git tag v1.0.0 && git push origin v1.0.0
+#
+# Builds the self-contained Windows .exe on Linux (1x-cost runners) and only runs
+# on a release, so it stays cheap.
+on:
+  push:
+    tags: ["v*.*.*"]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: "Version to release, e.g. 1.0.0 (creates and pushes tag v<version>)"
+        required: true
+      prerelease:
+        description: "Mark as a pre-release"
+        type: boolean
+        default: false
+
+permissions:
+  contents: write # create tags and releases
+
+concurrency:
+  group: release-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  DOTNET_CLI_TELEMETRY_OPTOUT: "1"
+  DOTNET_NOLOGO: "1"
+
+jobs:
+  release:
+    name: Build & publish Windows release
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          global-json-file: global.json
+
+      - name: Resolve version
+        id: ver
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            VERSION="${{ inputs.version }}"
+          else
+            VERSION="${GITHUB_REF_NAME#v}"
+          fi
+          if ! echo "$VERSION" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+'; then
+            echo "::error::Version '$VERSION' is not a valid SemVer (expected e.g. 1.0.0)."
+            exit 1
+          fi
+          echo "version=$VERSION" >> "$GITHUB_OUTPUT"
+          echo "tag=v$VERSION" >> "$GITHUB_OUTPUT"
+
+      - name: Test before release
+        run: |
+          dotnet restore ChipGauge.slnx
+          dotnet test ChipGauge.slnx -c Release
+
+      - name: Create and push tag (dispatch only)
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if git rev-parse "${{ steps.ver.outputs.tag }}" >/dev/null 2>&1; then
+            echo "::error::Tag ${{ steps.ver.outputs.tag }} already exists."
+            exit 1
+          fi
+          git tag -a "${{ steps.ver.outputs.tag }}" -m "ChipGauge ${{ steps.ver.outputs.tag }}"
+          git push origin "${{ steps.ver.outputs.tag }}"
+
+      - name: Publish self-contained Windows binaries
+        run: |
+          set -euo pipefail
+          VERSION="${{ steps.ver.outputs.version }}"
+          for RID in win-x64 win-arm64; do
+            dotnet publish src/ChipGauge.App/ChipGauge.App.csproj \
+              -c Release -r "$RID" --self-contained true \
+              -p:PublishSingleFile=true \
+              -p:IncludeNativeLibrariesForSelfExtract=true \
+              -p:PublishTrimmed=false \
+              -p:DebugType=none -p:DebugSymbols=false \
+              -p:Version="$VERSION" \
+              -o "publish/$RID"
+            # Ship the launcher as ChipGauge.exe (single-file bundle, safe to rename).
+            mv "publish/$RID/ChipGauge.App.exe" "publish/$RID/ChipGauge.exe"
+            (cd "publish/$RID" && zip -j "$GITHUB_WORKSPACE/ChipGauge-$VERSION-$RID.zip" ChipGauge.exe)
+          done
+          # Also expose the x64 launcher as a direct .exe download.
+          cp "publish/win-x64/ChipGauge.exe" "ChipGauge-$VERSION-win-x64.exe"
+          ls -la ChipGauge-*.zip ChipGauge-*.exe
+
+      - name: Create GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          FLAGS=""
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ] && [ "${{ inputs.prerelease }}" = "true" ]; then
+            FLAGS="--prerelease"
+          fi
+          gh release create "${{ steps.ver.outputs.tag }}" \
+            --title "ChipGauge ${{ steps.ver.outputs.tag }}" \
+            --generate-notes $FLAGS \
+            "ChipGauge-${{ steps.ver.outputs.version }}-win-x64.zip" \
+            "ChipGauge-${{ steps.ver.outputs.version }}-win-arm64.zip" \
+            "ChipGauge-${{ steps.ver.outputs.version }}-win-x64.exe"
